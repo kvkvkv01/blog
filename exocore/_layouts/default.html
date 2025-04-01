@@ -4,7 +4,9 @@
   <body>
       {{ content }}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script src="{{ site.baseurl }}/assets/js/wiki-preview.js"></script>
     <script>anchors.add('.post-content h2, h3, h4, h5, h6');</script>
+    <script src="{{ site.baseurl }}/assets/js/collapsible.js"></script>
 
     <!-- mathjax config similar to math.stackexchange -->
 <script type="text/x-mathjax-config">
@@ -36,6 +38,7 @@
   })
   </script>
 
+  <script src="{{ site.baseurl }}/assets/js/collapsible.js"></script>
 
   </body>
 </html>
