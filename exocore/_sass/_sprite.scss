@@ -1026,6 +1026,30 @@ table, tr, td {
     padding: 1em;
 }
 
+.popup-content {
+    padding: 16px;
+    overflow-y: auto;
+    height: calc(100% - 45px);
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: justify;
+    background: #eaedf0;
+
+}
+
+.popup-header {
+    display: flex
+;
+    align-items: center;
+    padding: 8px 12px;
+    background: #a9adb3;
+    border-bottom: 1px solid #ddd;
+    cursor: move;
+    user-select: none;
+}
+
+
+
 .border {
     border: thin solid black;
 }

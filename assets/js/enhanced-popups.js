@@ -38,16 +38,6 @@
             min-height: 0px;
         }
 
-        .popup-header {
-            display: flex;
-            align-items: center;
-            padding: 8px 12px;
-            background: #f8f9fa;
-            border-bottom: 1px solid #ddd;
-            cursor: move;
-            user-select: none;
-        }
-
         .popup-title {
             flex-grow: 1;
             font-size: 14px;
@@ -98,15 +88,6 @@
 
         .popup-preview:not(.minimized):not(.fullscreen)::after {
             display: block;
-        }
-
-        .popup-content {
-            padding: 16px;
-            overflow-y: auto;
-            height: calc(100% - 45px);
-            font-size: 14px;
-            line-height: 1.5;
-            text-align: justify;
         }
 
         .popup-content img {
