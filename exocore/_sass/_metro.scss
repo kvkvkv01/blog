@@ -58,12 +58,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .title-text {
-  text-transform: uppercase;
-text-decoration: none;
-  text-align: center;
-  font-weight: 700;
-  margin: 0;
-  line-height: 1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    text-align: left;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1em;
 }
 
 .post-content {
@@ -75,6 +75,7 @@ text-decoration: none;
         margin-bottom: 2em;
         max-height: 75vh;
         box-shadow: 0px 0px 10px 0px;
+        border: 1px solid $color-primary;
         }
     }
 
@@ -193,6 +194,7 @@ h6:hover > a.anchor {
 .title {
     margin-bottom: 1em;
     justify-items: left;
+    margin-top: 1em;
 }
 
 /* STRUCTURE */
