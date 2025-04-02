@@ -1018,12 +1018,14 @@ table, tr, td {
     float: right;
     width: 50%;
     padding: 1em;
+    margin: 1em;
 }
 
 .left {
     float: left;
     width: 50%;
     padding: 1em;
+    margin: 1em;
 }
 
 .popup-content {
@@ -1071,7 +1073,6 @@ article, .prev-next, .sidebar-card, .sidebar-link-box, .backlinks-container, .in
 body {
     background-image: url("/assets/imgs/BGs/perfect_girl.jpg");
     background-attachment: fixed;
-
-
+    background-size: cover;
 }
 
