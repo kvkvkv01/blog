@@ -4,22 +4,22 @@
 
 /* --- Body Colors --- */
 
-$background: lightgrey;
+$background: white;
 $color-border: none;
-$color-inner-divs: white;
-$color-items: white;
+$color-inner-divs: #eaecef;
+$color-items: #eaecef;
 
 
 /* --- Text Colors --- */
 $color-text: black;
 $color-subtext: black;
-$color-code: #707070;
-$internal-links: blue;
-$external-links: blue;
+$color-code: #ab8765;
+$internal-links: #ab8765;
+$external-links: #ab8765;
 $invalid-links: $internal-links;
-$color-primary: darkblue;
-$color-secondary: blue;
-$color-box-shadow: none;
+$color-primary: #ab8765;
+$color-secondary: #ab8765;
+$color-box-shadow: #eaecef;
 
 
 /* --- Borders --- */
@@ -410,6 +410,7 @@ article {
 
 .profile {
     margin-bottom: 0.5em;
+    padding-top: 0.5em;
     font-weight: bold;
     text-align: center;
 }
@@ -1035,11 +1036,8 @@ table, tr, td {
 
 
 article, .prev-next, .sidebar-card, .sidebar-link-box, .backlinks-container, .index-card {
-background: rgba(255, 255, 255, 0.8);
-    
-        box-shadow: 0 4px 30px rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(255, 255, 255, 1);
-
+background: #a4bbd52b;
+    box-shadow: 0 4px 30px rgba(255, 255, 255, 0.8);
 }
 
 body {
