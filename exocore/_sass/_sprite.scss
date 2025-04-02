@@ -1,46 +1,46 @@
-/* ### Theme: 0000ff ### */
+/* ### Theme: Yotsuba ### */
 
 /* === Base Settings === */
 
 /* --- Body Colors --- */
 
-$background: #000000;
-$color-inner-divs: black;
-$color-items: black;
+$background: lightgrey;
+$color-border: none;
+$color-inner-divs: white;
+$color-items: white;
 
 
 /* --- Text Colors --- */
-$color-text: white;
-$color-subtext: white;
-$color-code: pink;
-$internal-links: orange;
-$external-links: chocolate;
+$color-text: black;
+$color-subtext: black;
+$color-code: #707070;
+$internal-links: blue;
+$external-links: blue;
 $invalid-links: $internal-links;
-$color-primary: orange;
+$color-primary: darkblue;
 $color-secondary: blue;
 $color-box-shadow: none;
 
 
 /* --- Borders --- */
-$article-border: 1px solid white;
-$sidebar-border: 1px solid white;
-$prev-next-border: none;
+$article-border: 1px solid rgba(255, 255, 255, 1);
+$sidebar-border: 1px solid rgba(255, 255, 255, 1);
+$prev-next-border: 1px solid rgba(255, 255, 255, 1);
 $color-item-border: none;
-$border-radius: 0px;
 
 /* --- Embeds, Sidenote and Footnote Colors --- */
-$embed-border: thin solid orange;
-$color-embed-background: black;
-$color-embed-title: orange;
-$color-embed-text: white;
+$embed-border: medium double blue;
+$color-embed-background: $color-inner-divs;
+$color-embed-title: black;
+$color-embed-text: black;
 
-$footnote-border: thin solid orange;
-$color-footnote-background: black;
-$color-footnote-text: white;
+$footnote-border: thin solid blue;
+$color-footnote-background: $color-inner-divs;
+$color-footnote-text: blue;
 
-$sidenote-border: thin solid $color-primary;
-$color-sidenote-background: black;
-$color-sidenote-text: $color-text;
+$sidenote-border: thin solid $color-secondary;
+$color-sidenote-background: #fffffa;
+$color-sidenote-text: black;
 
 
 
@@ -49,9 +49,29 @@ $font-family-sans-serif: Helvetica, Arial, -apple-system, BlinkMacSystemFont, Se
 
 $font-family-serif: serif;
 
-$font-family-monospace: ”Iosevka Term SS03”,”IBM Plex Mono”,”Fira Code”,”Fira Mono”,”Roboto Mono”,”Droid Sans Mono”,Monaco,Consolas,Courier,monospace;
+$font-family-monospace: ”Iosevka Term SS03”,”IBM Plex Mono”,”Fira Code”,”Fira Mono”,”Roboto Mono”,”Droid Sans Mono”,Monaco,Consolas,Courier,monospace;;
+
+/* === Body === */
+
+article {
+    margin-bottom: 0.5em;
+}
 
 
+body {
+  background-color: black;
+  background-image: url("/assets/imgs/BGs/bg-space.gif");
+  background-repeat: repeat;
+    background-attachment: fixed;
+  box-sizing: content-box;
+  font-family: $font-family-sans-serif;
+  margin: 0 auto;
+  line-height: 1.1em;
+  padding: 2rem;
+  overflow-x: hidden;
+  color: $color-text;
+  font-size: 1rem;
+}
 body {
   font-family: $font-family-sans-serif;
   padding: 4vh 6vw;
@@ -62,54 +82,51 @@ body {
 }
 
 
-/* TITLES
-================================================== */
+img {
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+  max-height: 75vh;
+  border: none;
+  width:80%;
+}
+
+blockquote {
+  padding: 1em;
+  color:#9f9922;
+  margin: 0;
+  font-size: 1em;
+}
+
+ul {
+  list-style-type: bullet;
+}
+
+hr {
+  margin:1.5em;
+  margin-bottom:0em;
+ background-color: $color-box-shadow;
+}
 
 h1,h2,h3,h4,h5,h6 {
   line-height: 1.4;
   padding-bottom: 0;
   font-size:1.15em;
   margin:1em;
-  margin-left:0em;
+  margin-left:1em;
+  text-align:left
 }
 
-.title-text {
-    text-transform:uppercase;
-    text-decoration:underline;
-    text-align:center;
-    font-weight:bold;
-    margin:0em;
-    line-height:1em;
-}
+.title-text { color: white; font-weight:bold; font-size:1.6em; line-height:1em; margin:0em; text-align:center; padding:1em; padding-bottom:0.5em; text-decoration:none !important; text-shadow: 0px 0px 6px darkblue; text-transform: uppercase}
 
-.post-content{
-    
-h1 {text-transform:uppercase; text-align:center;font-weight:bold; text-decoration: underline; font-size: 1.3em;}
-
-h2 {text-transform:uppercase; text-align:left;font-weight:bold; font-size: 1.25em}
-
-h3 {text-transform:none;font-weight:normal; text-decoration:underline;text-align:left;}
-
-h4 {text-transform:none;font-weight:normal; font-size:1em; text-align:left}
-}
-
-
-ul {
-  list-style-type: circle;
-}
-
-hr {
-  margin:1.5em;
-}
-
-
-
-/* CODE HIGHLIGHTING
-================================================== */
+h1 {color:blue; font-weight:bold; text-decoration:underline; font-size: 1.3em;}
+h2 {color:blue; font-weight:bold;}
+h3 {color:blue; font-weight:normal; text-decoration:underline}
+h4 {text-transform:none;font-weight:strong; font-size:1em;}
+h5 {text-transform:none;font-weight:normal; text-decoration:underline; tfont-size:1em;}
 
 code {
-  color: white;
-  background-color:blue;
+  color: $color-code;
   font-family: $font-family-monospace;
   font-size: 1em;
 }
@@ -118,22 +135,25 @@ PRE {
   margin-left: 1em;
 }
 
+*:focus {
+  background: white !important;
+  color: black !important;
+}
 
-/* LINKS
-================================================== */
+/* -- Links -- */
 
 a {
-  color: $internal-links;
-  text-decoration: none;
+  color: $external-links;
+  text-decoration:underline;
   }
     a:hover {
-    color: $internal-links;
+    color:red !important;
     text-decoration: underline;
     cursor: pointer;
   }
       a.internal-link {
-    color: $internal-links;
-       text-decoration:none; 
+    color: $external-links;
+       text-decoration:underline; 
     cursor: pointer;
       }
       .notes-entry-container a.internal-link::before{
@@ -143,19 +163,24 @@ a {
   color: $invalid-links;
   cursor: help;
 }
-.web-link{
-    color:$external-links;
-}
    .web-link:hover {
        cursor: alias;
-       color:$external-links;
-       text-decoration: underline;
+        
     }
-.lastest-post-border h1, .title-text a {
-    color: $color-text;
+
+
+nav a.intern-link::before{
+  content:""; color:blue;
 }
+
 .sidenote a, nav a {
     font-weight: normal !important;
+    text-decoration:underline
+}
+
+.sidenote a:hover{
+    font-weight: normal !important;
+    text-decoration:underline
 }
 nav a {
   color: blue !important;
@@ -173,13 +198,9 @@ nav a {
   cursor: pointer;
 }
 
-
-
-/* HEADER ANCHORS
-================================================== */
-
+/* --- Header Anchors --- */
 .anchor {visibility: hidden; color:gray; opacity:0.7; text-decoration:none; font-size: 0.8em; font-familiy:monospace}
-.anchor:hover {text-decoration:none; color:white !important; cursor:pointer;}
+.anchor:hover {text-decoration:none; color:black !important; cursor:pointer;}
 h1:hover > a.anchor,
 h2:hover > a.anchor,
 h3:hover > a.anchor,
@@ -190,21 +211,56 @@ h6:hover > a.anchor {
 } 
 
 
-/* PAGE FORMATTING
-================================================== */
+
+/* === Page Formatting === */
 
 .title {
-  border: $color-item-border; padding: 1em;
-  margin-bottom:1em;
+  border: $color-border; 
+  padding: 0em;
+  margin-bottom:0em;
+  text-align:center;
 }
 
-/* BACKLINKS
-================================================== */
+nav {
+  background-color: $color-inner-divs;
+  border: $color-border; padding: 1em;
+    box-shadow: 1px 1px 0px $color-box-shadow;
+ color: blue;
+ font-weight: normal; 
+ padding: 1em;
+ margin: 1em 0 1em;
+}
+
+.alignleft {
+  float: left;
+    text-align:left;
+}
+.alignright {
+  float: right;
+   text-align:right;
+}
+
+.border, .notes-entry-container {
+  border: $color-border; 
+  padding: 2em;
+  padding-top:1em;
+   @media (max-width: 700px) {
+    border:none;
+    padding:none;
+  }
+}
+
+
+/* -- Interlinks -- */
 
 .backlink-box {
-// This is the box around the backlinks.
-// add your own styling here if you want
+  background-color: $color-inner-divs;
+  border: $color-border;
+      box-shadow: 1px 1px 0px $color-box-shadow;
+  padding:1em;
+  line-height:1em;
 }
+
 
 .backlinks-excerpt{
   font-size: 0.9em; color: $color-subtext;
@@ -213,27 +269,40 @@ h6:hover > a.anchor {
   font-size: 0.9em; text-align:center;
 }
 
-#graph-wrapper svg {
-    border: thin solid white;
+.note {
+  border: $color-border;
+  padding:1em; padding-top:0em; 
+}
+.content {
+  margin-left:2em; 
+  margin-right:1em; 
+  line-height: 1.1em;
+  padding-top:0.5em;
+
+}
+.content p {
+  margin-left:1em;
 }
 
-/* TABLE OF CONTENTS
-================================================== */
 
+/* Table of Contents */
 .toc-container{
-  border: $article-border;
-  padding: 1em;
-  padding-bottom: 0em;
+    padding:1em;
+  border: $color-border; 
+    box-shadow: 1px 1px 0px $color-box-shadow;
+  background-color: $color-inner-divs;
   margin: 1em;
+  margin-top:2em;
   margin: 0 auto;
   display: block;
   max-width: 50%;
-    @media (max-width: 700px) {
-  max-width:100%;
-  }
 }
 .toc-container h1 {
   margin:0em;
+  color:$color-secondary;
+  text-align:center;
+  font-size:1em;
+  text-decoration:none !important;
 }
 
 .toc-container ol li  {
@@ -245,32 +314,9 @@ h6:hover > a.anchor {
 }
 
 
-
-/* FOOTER
-================================================== */
-
-.footer-nav {
-  margin:1em;
-  font-size: 0.8em;
-  color: $color-text;
-  text-align:center;
-}
-
-license {
-  text-align: center;
-  font-family: $font-family-monospace;
-  font: 1.1em;
-}
-
-.license {
-  padding:1em; margin-top:1em; max-width: 28em; margin: 0 auto; text-align:center;
-}
-
-
 //--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--\\
 //--=--=--=--=--=--=--=--=*EXTRAS*=--=--=--=--=--=--=--=--\\
-//--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--\\
-
+//--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--\\ 
 
 
 /* STRUCTURE
@@ -280,7 +326,6 @@ license {
     margin-bottom: 1em;
     float: left;
     clear: both;
-    background-color: $background;
     padding: 0.5em 1em;
     box-sizing: border-box;
     width: 100%;
@@ -295,20 +340,13 @@ license {
     float: left;
     width: 15%;
     margin: 0.5em;
-     @media (max-width: 900px)
-     {width: 100%;
-         margin: auto
-         }}
+}
 
 .midcolumn {
     float: left;
     width: 60%;
     margin: 0.5em;
-    
-@media (max-width: 900px)
-     {width: 100%;
-    margin: auto
-}}
+}
 
 .midcolumn-small {
     width: 40%;
@@ -320,11 +358,7 @@ margin: auto;
 }
 
 article {
-    background-color: $background;    
     box-shadow: 1px 1px 0px $color-box-shadow;
-    @media (max-width: 900px)
-    {margin-left:0.5em;
-    }
 }
 
 
@@ -363,15 +397,10 @@ article {
 
 .sidebar-card a, .related a {
     margin-bottom: 0.5em;
-    text-decoration: underline;
-}
-sidebar-card a:hover{
-    color:$color-text;
 }
 
 .profile-pic {
-    border-radius: 50%;
-    width: 55px;
+    width: 80px;
     margin-bottom: 0.5em;
     
     @media (max-width: 900px)
@@ -464,13 +493,12 @@ sidebar-card a:hover{
   margin: auto;
   margin-bottom: 2em;
   max-height: 75vh;
-  border-radius: $border-radius;
 }
 
 
 .post-content blockquote {
+  padding: 1em;
   margin: 0;
-  margin-left:1em;
   font-size: 1em;
   font-family: $font-family-serif;
     font-style: italic;
@@ -484,7 +512,7 @@ sidebar-card a:hover{
 // image captions
 img+em {
     display: block;
-    color: $internal-links;
+    color: $color-primary;
     text-align: center;
     width: 50%;
     margin-left: auto;
@@ -514,7 +542,6 @@ img+em {
     line-height:1em;
     background-color: $color-items;
     border: 1px solid $color-primary;
-    border-radius: $border-radius;
     line-height:1em;
 }
 
@@ -597,6 +624,21 @@ img+em {
 }
 
 
+  .license {
+  font-family: monospace;
+  line-height: 1.1em;
+  color: $color-text;
+  font-size: 1rem;
+  border: $article-border;
+  background-color: $color-items;
+  display: block;
+  padding: 1em;
+  max-width: 28em;
+  margin: 2em auto;
+  text-align: center;
+  }
+
+
 /* INDEX
 ================================================== */
 
@@ -671,7 +713,6 @@ font-weight: normal;
     display: grid;
     grid-template-columns: 33.33% 33.33% 33.33%;
     grid-gap: 0.5em;
-    background-color: $background;
     padding: 1em;
     margin: auto;
 }
@@ -692,24 +733,12 @@ font-weight: normal;
     grid-auto-columns: 100% 10%;
 }
 
-.draft-badge {
-    padding: 0.5em;
-    width: fit-content;
-    // margin: 0.5em 0.5em auto auto;
-    // position: absolute;
-    float: right;
-    background-color: orange;
-    color: white;
-    font-weight: normal;
-  }
-  
 .post-date {
-    padding: 0.5em;
-    // margin: 0.5em auto auto 0.5em;
-    width: fit-content;
-    // margin: auto;
-    // position: absolute;
-  }
+    padding-top: 0.5em;
+    margin-left: 0.5em;
+    margin-bottom: -0.5em;
+
+}
 
 .library-grid-container {
     width: 90%;
@@ -776,9 +805,7 @@ font-weight: normal;
 ================================================== */
 
 .prev-next {
-    border:1px solid white;
     margin-bottom: 0.5em;
-    background-color: $background;
 //    display: grid;
 //    grid-template-columns: 10% 40% 40% 10%;
     width: 100%;
@@ -800,8 +827,7 @@ font-weight: normal;
 }
 
 .title-text {
-    font-size: 1.5em;
-    margin-top:0.5em;
+    font-size: 1.8em;
 }
 
 .subtitle-text {
@@ -927,7 +953,7 @@ table, tr, td {
 
 // Border around the next/previous buttons above and below your posts
 .prev-next, {
-    border: 1px solid white; 
+    border: $prev-next-border; 
     box-sizing: border-box;
 
 }
@@ -962,6 +988,7 @@ table, tr, td {
     width: 40%;
     margin-left: 2em;
     font-size: 0.9em;
+    background-color: $color-embed-background;
 }
 
 .left-aside {
@@ -971,6 +998,7 @@ table, tr, td {
     width: 40%;
     margin-left: 2em;
     font-size: 0.9em;
+    background-color: $color-embed-background;
 }
 
 .center{
@@ -1003,5 +1031,21 @@ table, tr, td {
 
 .glow {
     box-shadow: 0px 0px 15px white;
+}
+
+
+article, .prev-next, .sidebar-card, .sidebar-link-box, .backlinks-container, .index-card {
+background: rgba(255, 255, 255, 0.8);
+    
+        box-shadow: 0 4px 30px rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 1);
+
+}
+
+body {
+    background-image: url("/assets/imgs/BGs/wonder.gif");
+    background-attachment: fixed;
+
+
 }
 
