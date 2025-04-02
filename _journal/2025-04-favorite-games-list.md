@@ -2,7 +2,7 @@
 published: true
 subtitle:
 date: 2025-04-01
-tags: videogames
+tags: videogames list
 foam_template:
   filepath: '_journal/2025-04-favorite-games-list.md'
   name: Journal Entry

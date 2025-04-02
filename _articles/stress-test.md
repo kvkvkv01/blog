@@ -13,3 +13,5 @@ foam_template:
 
 Feel free to delete!
 
+This is a stress test page with all the possible markdown functionalities you can use in your exocore.
+
