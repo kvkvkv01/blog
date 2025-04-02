@@ -652,7 +652,7 @@ img+em {
   font-size: 1rem;
   border: $article-border;
   background-color: $color-items;
-  display: block;
+  display: none;
   padding: 1em;
   max-width: 28em;
   margin: 2em auto;
@@ -1079,8 +1079,12 @@ table, tr, td {
 
 article, .prev-next, .sidebar-card, .sidebar-link-box, .backlinks-container, .index-card {
     background-color: #eaedf0e8;
-    border-top-right-radius: 45px;
-    border-bottom-left-radius: 45px;
+    border-top-right-radius: 18px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 0px;
+    border-bottom: 1px solid hsl(250,2%,52%);
+    box-shadow: 2px 2px 0px var($color-box-shadow);
 }
 
 body {
