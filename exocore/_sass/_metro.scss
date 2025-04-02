@@ -208,6 +208,24 @@ h6:hover > a.anchor {
   border: 1px solid rgba(0, 0, 0, 0.5);
 }
 
+.sidebar-card a {
+  color: $color-text;
+  text-decoration: none;
+  transition: color 0.15s ease-in-out;
+  border: 1px solid;
+  padding: 3px 12px;
+  margin: 2px;
+  width: 100%;
+  text-align-last: center;
+}
+
+.sidebar-card a:hover {
+  color: $color-primary;
+  text-decoration: none;
+  cursor: pointer;
+  background: black;
+  color: white;
+}
 .container-lg {
   max-width: 80em;
   margin: auto;
