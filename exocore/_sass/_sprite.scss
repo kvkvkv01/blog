@@ -147,7 +147,7 @@ a {
   text-decoration:underline;
   }
     a:hover {
-    color:red !important;
+    color:$color-primary !important;
     text-decoration: underline;
     cursor: pointer;
   }
