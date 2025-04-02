@@ -280,9 +280,7 @@ nav {
   padding-top:0.5em;
 
 }
-.content p {
-  margin-left:1em;
-}
+
 
 
 /* Table of Contents */
@@ -488,9 +486,10 @@ article {
 ================================================== */
 .post-content {
     line-height: 1.5em;
-      margin-left:2em; 
-  margin-right:1em; 
-  padding-top:0.5em;
+    margin-left:1em; 
+    margin-right:1em; 
+    padding-top:0.5em;
+    text-align: justify;
 }
 
 .post-content img {
@@ -1042,6 +1041,7 @@ table, tr, td {
 
 article, .prev-next, .sidebar-card, .sidebar-link-box, .backlinks-container, .index-card {
     box-shadow: 0 4px 30px rgba(255, 255, 255, 0.8);
+    background-color: #eaedf0;
 }
 
 body {
