@@ -397,6 +397,13 @@ article {
 
 .sidebar-card a, .related a {
     margin-bottom: 0.5em;
+    color: white;
+    background-color: #1d1d70;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    height: 20px;
+    align-content: space-evenly;
+    text-decoration: none;
 }
 
 .profile-pic {
@@ -429,8 +436,6 @@ article {
     display: grid;
     grid-template-columns: auto;
     border: $color-item-border; 
-    box-shadow: 1px 1px 0px $color-box-shadow;
-    background-color: $color-inner-divs;
     margin-bottom: 0.5em;
     max-width: 100%;
     padding: 0.5em;
@@ -1036,7 +1041,6 @@ table, tr, td {
 
 
 article, .prev-next, .sidebar-card, .sidebar-link-box, .backlinks-container, .index-card {
-background: #a4bbd52b;
     box-shadow: 0 4px 30px rgba(255, 255, 255, 0.8);
 }
 
