@@ -223,7 +223,7 @@ h6:hover > a.anchor {
   color: $color-primary;
   text-decoration: none;
   cursor: pointer;
-  background: black;
+  background: #374151;
   color: white;
 }
 .container-lg {
@@ -243,10 +243,14 @@ h6:hover > a.anchor {
 }
 
 .midcolumn {
-  float: left;
-  width: 60%;
-  margin: 0.5em;
-  
+    float: left;
+    width: 60%;
+    margin: 0.5em;
+    border: 1px solid $color-primary;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 15px;
+      
   @media (max-width: 900px) {
     width: 100%;
     margin: auto;
@@ -260,8 +264,10 @@ h6:hover > a.anchor {
 
 /* PROFILE */
 .profile-pic {
-  width: 55px;
+  width: 120px;
   margin-bottom: 0.5em;
+  margin-top: 0.5em;
+  border: 1px solid $color-primary;
   
   @media (max-width: 900px) {
     float: 100%;
@@ -757,7 +763,7 @@ text-decoration: none;
 @media print {
   body {
     background: white;
-    color: black;
+    color: #374151;
     margin: 0;
     padding: 2cm;
   }
@@ -768,7 +774,7 @@ text-decoration: none;
   
   a {
     text-decoration: none;
-    color: black;
+    color: #374151;
   }
 }
 
