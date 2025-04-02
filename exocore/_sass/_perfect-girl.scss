@@ -679,54 +679,45 @@ img+em {
         text-decoration: none !important;
 
 }
+
 .index-item, .archive-item, .library-item {
-    width: 95%;
-    margin: auto;
-    background-color: $color-items;
-    text-align: left;
-    margin-bottom: 1em;
-    padding: 0.5em;
-    border: thin solid $color-primary;
-    box-sizing: border-box;
-    
-    &:hover {
-        box-shadow: 0px 0px 0px 1px $color-primary;
-    }
-}
-
-.index-item {
-    height: 8em;
-    overflow: hidden;
-}
-
-.index-item-title, .library-item-title {
-font-weight: bold;
-    text-decoration: underline;
-    color: $color-text;
-    overflow: hidden;
-}
-
-.index-item-date, .library-item-filetype {
-    font-weight: normal;
-    float: right;
-}
-
-.index-item-topic {
-font-weight: normal;
-    font-weight: bold;
-
-}
-
-.index-item-excerpt {
-font-weight: normal;
-    height: 5em;
-    width: 85%;
-    overflow: hidden;
-    float: left;
-
-}
-
-
+        width: 100%;
+        margin: auto auto 1em;
+        background-color: $color-items;
+        text-align: left;
+        padding: 0.5em;
+        border: thin solid $color-primary;
+        box-sizing: border-box;
+        border-radius: $border-radius;
+        overflow: hidden;
+        height: 100%;
+        
+        &:hover {
+          box-shadow: 0 0 0 1px $color-primary;
+        }
+      }
+      
+      .index-item-title {
+        font-weight: bold;
+      text-decoration: none;
+        color: $color-text;
+        overflow: hidden;
+      }
+      
+      .index-item-date {
+        font-weight: normal;
+        float: right;
+      }
+      
+      .index-item-topic {
+        font-weight: bold;
+      }
+      
+      .index-item-excerpt {
+        font-weight: normal;
+        height: 5em;
+        width: 85%;
+      }
 
 /* ARCHIVE
 ================================================== */

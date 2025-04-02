@@ -368,45 +368,45 @@ text-decoration: none;
   }
 }
 
-.index-item {
-  width: 95%;
-  margin: auto auto 1em;
-  background-color: $color-items;
-  text-align: left;
-  padding: 0.5em;
-  border: thin solid $color-primary;
-  box-sizing: border-box;
-  border-radius: $border-radius;
-  overflow: hidden;
-  
-  &:hover {
-    box-shadow: 0 0 0 1px $color-primary;
+.index-item, .archive-item, .library-item {
+    width: 100%;
+    margin: auto auto 1em;
+    background-color: $color-items;
+    text-align: left;
+    padding: 0.5em;
+    border: thin solid $color-primary;
+    box-sizing: border-box;
+    border-radius: $border-radius;
+    overflow: hidden;
+    height: 100%;
+    
+    &:hover {
+      box-shadow: 0 0 0 1px $color-primary;
+    }
   }
-}
+  
+  .index-item-title {
+    font-weight: bold;
+  text-decoration: none;
+    color: $color-text;
+    overflow: hidden;
+  }
+  
+  .index-item-date {
+    font-weight: normal;
+    float: right;
+  }
+  
+  .index-item-topic {
+    font-weight: bold;
+  }
+  
+  .index-item-excerpt {
+    font-weight: normal;
+    height: 5em;
+    width: 85%;
+  }
 
-.index-item-title {
-  font-weight: bold;
-text-decoration: none;
-  color: $color-text;
-  overflow: hidden;
-}
-
-.index-item-date {
-  font-weight: normal;
-  float: right;
-}
-
-.index-item-topic {
-  font-weight: bold;
-}
-
-.index-item-excerpt {
-  font-weight: normal;
-  height: 5em;
-  width: 85%;
-  overflow: hidden;
-  float: left;
-}
 
 /* TABLES */
 table, tr, td {
