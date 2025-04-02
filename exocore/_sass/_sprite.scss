@@ -117,13 +117,24 @@ h1,h2,h3,h4,h5,h6 {
   text-align:left
 }
 
-.title-text { color: white; font-weight:bold; font-size:1.6em; line-height:1em; margin:0em; text-align:center; padding:1em; padding-bottom:0.5em; text-decoration:none !important; text-shadow: 0px 0px 6px darkblue; text-transform: uppercase}
+.title-text { 
+    color: white; 
+    font-weight:bold; 
+    font-size:1.6em; 
+    line-height:1em; 
+    margin:0em; 
+    text-align:center; 
+    padding:1em; 
+    padding-bottom:0.5em; 
+    text-shadow: 0px 0px 6px darkblue; 
+    text-transform: uppercase
+}
 
 h1 {color:blue; font-weight:bold; text-decoration:underline; font-size: 1.3em;}
 h2 {color:blue; font-weight:bold;}
 h3 {color:blue; font-weight:normal; text-decoration:underline}
 h4 {text-transform:none;font-weight:strong; font-size:1em;}
-h5 {text-transform:none;font-weight:normal; text-decoration:underline; tfont-size:1em;}
+h5 {text-transform:none;font-weight:normal; text-decoration:underline; font-size:1em;}
 
 code {
   color: $color-code;
@@ -199,7 +210,7 @@ nav a {
 }
 
 /* --- Header Anchors --- */
-.anchor {visibility: hidden; color:gray; opacity:0.7; text-decoration:none; font-size: 0.8em; font-familiy:monospace}
+.anchor {visibility: hidden; color:gray; opacity:0.7; text-decoration:none; font-size: 0.8em; font-family:monospace}
 .anchor:hover {text-decoration:none; color:black !important; cursor:pointer;}
 h1:hover > a.anchor,
 h2:hover > a.anchor,
@@ -445,7 +456,8 @@ article {
 }}
 
 .silent-link {
-    color: $color-text;
+    color: white;
+    text-shadow: 0px 6px darkblue;
 }
 
 /* HOME 
@@ -831,10 +843,6 @@ font-weight: normal;
     float: right;
 }
 
-.title-text {
-    font-size: 1.8em;
-}
-
 .subtitle-text {
     width: 100%;
     text-align: center !important;
@@ -957,7 +965,7 @@ table, tr, td {
 }
 
 // Border around the next/previous buttons above and below your posts
-.prev-next, {
+.prev-next {
     border: $prev-next-border; 
     box-sizing: border-box;
 
@@ -1066,8 +1074,7 @@ table, tr, td {
 
 
 article, .prev-next, .sidebar-card, .sidebar-link-box, .backlinks-container, .index-card {
-    box-shadow: 0 4px 30px rgba(255, 255, 255, 0.8);
-    background-color: #eaedf0;
+    background-color: #eaedf0e8;
 }
 
 body {
