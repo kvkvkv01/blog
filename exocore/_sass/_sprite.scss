@@ -47,7 +47,7 @@ $color-sidenote-text: black;
 /* --- Font Family --- */
 $font-family-sans-serif: Helvetica, Arial, -apple-system, BlinkMacSystemFont, Segoe UI,  sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
 
-$font-family-serif: serif;
+$font-family-serif: "Cira serif";
 
 $font-family-monospace: ”Iosevka Term SS03”,”IBM Plex Mono”,”Fira Code”,”Fira Mono”,”Roboto Mono”,”Droid Sans Mono”,Monaco,Consolas,Courier,monospace;;
 
@@ -64,7 +64,7 @@ body {
   background-repeat: repeat;
     background-attachment: fixed;
   box-sizing: content-box;
-  font-family: $font-family-sans-serif;
+  font-family: $font-family-serif;
   margin: 0 auto;
   line-height: 1.1em;
   padding: 2rem;
@@ -73,7 +73,7 @@ body {
   font-size: 1rem;
 }
 body {
-  font-family: $font-family-sans-serif;
+  font-family:  $font-family-serif;
   padding: 4vh 6vw;
   overflow-x: hidden;
   color: $color-text;
@@ -210,7 +210,7 @@ nav a {
 }
 
 /* --- Header Anchors --- */
-.anchor {visibility: hidden; color:gray; opacity:0.7; text-decoration:none; font-size: 0.8em; font-family:monospace}
+.anchor {visibility: hidden; color:gray; opacity:0.7; text-decoration:none; font-size: 0.8em; font-family: $font-family-serif}
 .anchor:hover {text-decoration:none; color:black !important; cursor:pointer;}
 h1:hover > a.anchor,
 h2:hover > a.anchor,
@@ -642,7 +642,7 @@ img+em {
 
 
   .license {
-  font-family: monospace;
+  font-family:  $font-family-serif;
   line-height: 1.1em;
   color: $color-text;
   font-size: 1rem;
@@ -1075,6 +1075,8 @@ table, tr, td {
 
 article, .prev-next, .sidebar-card, .sidebar-link-box, .backlinks-container, .index-card {
     background-color: #eaedf0e8;
+    border-top-right-radius: 45px;
+    border-bottom-left-radius: 45px;
 }
 
 body {
