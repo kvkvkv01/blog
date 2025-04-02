@@ -114,7 +114,8 @@ h1,h2,h3,h4,h5,h6 {
   font-size:1.15em;
   margin:1em;
   margin-left:1em;
-  text-align:left
+  text-align:left;
+  font-family: $font-family-monospace !important;
 }
 
 .title-text { 
@@ -311,6 +312,7 @@ nav {
 .toc-container h1 {
   margin:0em;
   color:$color-secondary;
+  text-shadow: none !important;
   text-align:center;
   font-size:1em;
   text-decoration:none !important;
