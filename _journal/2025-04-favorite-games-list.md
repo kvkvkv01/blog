@@ -15,7 +15,7 @@ foam_template:
 ![Pikmin 1](<../images/Pikmin 1.webp>)
 _Pikmin 1_
 
-The games Nintendo made for the Gamecube themselves were all seriously ambitious conceptual leaps, overlooked for their cute simplicity which disguised their elegance. They work so well we take the utterly original premises and systems for granted. The premise of a game like Pikmin works so well that it feels inevitable.
+The games [Nintendo](https://en.wikipedia.org/wiki/Nintendo) made for the Gamecube themselves were all seriously ambitious conceptual leaps, overlooked for their cute simplicity which disguised their elegance. They work so well we take the utterly original premises and systems for granted. The premise of a game like Pikmin works so well that it feels inevitable.
 
 ## Dead Rising
 Stunning game. Heavy, tactile, responsive, formal and new. Video game tradition and contemporary popular culture played so straight but made into something so strikingly original. Like Halo it's a game that should become more impressive the more you think about it. Even all these years later few have taken it seriously enough to see what's really going on.
