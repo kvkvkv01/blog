@@ -11,8 +11,10 @@ foam_template:
 # Favorite Games List
 
 ## Pikmin
+
 ![Pikmin 1](<../images/Pikmin 1.webp>)
 _Pikmin 1_
+
 The games Nintendo made for the Gamecube themselves were all seriously ambitious conceptual leaps, overlooked for their cute simplicity which disguised their elegance. They work so well we take the utterly original premises and systems for granted. The premise of a game like Pikmin works so well that it feels inevitable.
 
 ## Dead Rising
