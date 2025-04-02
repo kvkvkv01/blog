@@ -34,4 +34,4 @@ Also I didn't recall a single piece of music from this game after playing it and
 
 https://www.youtube.com/watch?v=rNWWJKiyOF8
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/https://www.youtube.com/watch?v=rNWWJKiyOF8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/rNWWJKiyOF8?si=M6HWB0Zz1oEHolEh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

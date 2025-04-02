@@ -24,7 +24,7 @@ type:
       <div class="index-item">
         <span class="index-item-date">{{ item.date | date: "%d %b %Y" }}</span>
         <span class="index-item-title">{{ item.title | truncate: 55 }}</span>
-        <span class="index-item-excerpt">{{- item.content | strip_html | truncate: 150 -}} </span>
+        <br><span class="index-item-excerpt">{{- item.content | strip_html | truncate: 150 -}} </span>
       </div>
           </a>
        {% endfor %}
