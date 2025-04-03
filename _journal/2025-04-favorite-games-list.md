@@ -20,6 +20,8 @@ The games [Nintendo](https://en.wikipedia.org/wiki/Nintendo) made for the Gamecu
 ## Dead Rising
 Stunning game. Heavy, tactile, responsive, formal and new. Video game tradition and contemporary popular culture played so straight but made into something so strikingly original. Like Halo it's a game that should become more impressive the more you think about it. Even all these years later few have taken it seriously enough to see what's really going on.
 
+Here's text with a formatted sidenote[^1].
+
 ## X-COM: UFO Defense
 Possibly the greatest "tactical" experience in the history of game systems. The game's premise feels so realised. Everything that could be relevant is there and just works. A world of objects and entities with characteristics and functions and goals and you have a perfectly satisfying and complete-feeling spread of potential inputs. It's a game that makes it feel like you can do anything, while also feeling like a complete formal system rather than a chaotic sprawl that stops rather than completes. Conversion mods are being made today of this game that came out on floppy discs. Glorious testament to its fundamental systems.
 
@@ -139,3 +141,5 @@ So vicious, so grounded, so personal, so engrossing. Shirtless guys throwing roc
 
 ## Metal Gear Solid 4: Guns of the Patriots
 Future-shock in its time. Future-shock today. A game so conceptually advanced it was showing us a world of what video games could be, as its own complete and playable game. And then the rest of the industry went another way rather than catching up. So this game is still as unique as it was in its prime. Like a vision of a AAA game from another dimension. And the Japanese sci-fi dream of the mid-2000s died not long after this, and wasn't realised visually too many times. Still a stunningly unique premise and world. This game might never get old. At least it hasn't yet.
+
+[^1]: This sidenote can contain **bold text**, *italic text*, and even [links](https://example.com).

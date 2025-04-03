@@ -8,6 +8,3 @@ foam_template:
 ---
 # What is Obamacore
 
-Here's text with a formatted sidenote[^1].
-
-[^1]: This sidenote can contain **bold text**, *italic text*, and even [links](https://example.com).
