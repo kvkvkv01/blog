@@ -18,6 +18,13 @@ var GW = {
         }
     },
 
+    // Logging functionality
+    log: function(message, type) {
+        if (console && console.log) {
+            console.log(`[${type || 'INFO'}] ${message}`);
+        }
+    },
+
     // Notification center functionality
     notificationCenter: {
         notifications: [],
@@ -127,13 +134,39 @@ var GW = {
         } else {
             handler();
         }
+    },
+
+    // Scroll handling
+    addScrollListener: function(element, handler) {
+        if (element.addEventListener) {
+            element.addEventListener('scroll', handler, { passive: true });
+        } else if (element.attachEvent) {
+            element.attachEvent('onscroll', handler);
+        } else {
+            element.onscroll = handler;
+        }
     }
 };
 
 // Make GW available globally
 window.GW = GW;
 
+// Make GWLog available globally
+window.GWLog = function(message, type) {
+    GW.log(message, type);
+};
+
 // Make getSavedCount available globally for backward compatibility
 window.getSavedCount = function() {
     return GW.getSavedCount();
+};
+
+// Make addContentLoadHandler available globally
+window.addContentLoadHandler = function(handler) {
+    GW.addContentLoadHandler(handler);
+};
+
+// Make addScrollListener available globally
+window.addScrollListener = function(element, handler) {
+    GW.addScrollListener(element, handler);
 }; 
