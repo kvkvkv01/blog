@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 {% include head-custom.html %}
 <html lang="{{ page.lang | default: site.lang | default: "en-US" }}">
+  <head>
+    <!-- Add sidenotes CSS -->
+    <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/sidenotes.css">
+  </head>
   <body>
       {{ content }}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
@@ -19,28 +23,15 @@
     <!-- Load jQuery first -->
     <script src="{{ site.baseurl }}/assets/js/jquery.min.js"></script>
     
-    <!-- Load GW object first -->
-    <script src="{{ site.baseurl }}/assets/js/gw.js"></script>
-    
-    <!-- Load Extracts first since other scripts depend on it -->
-    <script src="{{ site.baseurl }}/assets/js/extracts.js"></script>
-    
-    <!-- Load remaining scripts -->
-    <script src="{{ site.baseurl }}/assets/js/annotations.js"></script>
-    <script src="{{ site.baseurl }}/assets/js/collapse.js"></script>
-    <script src="{{ site.baseurl }}/assets/js/embeder.js"></script>
-    <script src="{{ site.baseurl }}/assets/js/extracts-annotations.js"></script>
-    <script src="{{ site.baseurl }}/assets/js/extracts-content.js"></script>
-    <script src="{{ site.baseurl }}/assets/js/extracts-load.js"></script>
-    <script src="{{ site.baseurl }}/assets/js/extracts-options.js"></script>
-    <script src="{{ site.baseurl }}/assets/js/image-focus.js"></script>
-    <script src="{{ site.baseurl }}/assets/js/popins.js"></script>
-    <script src="{{ site.baseurl }}/assets/js/popups.js"></script>
+    <!-- Add sidenotes JavaScript -->
     <script src="{{ site.baseurl }}/assets/js/sidenotes.js"></script>
-    <script src="{{ site.baseurl }}/assets/js/tablesorter.js"></script>
-    <script src="{{ site.baseurl }}/assets/js/transclude.js"></script>
-    <script src="{{ site.baseurl }}/assets/js/typography.js"></script>
-    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Initialize sidenotes
+        Sidenotes.setup();
+      });
+    </script>
+
     <script type="text/javascript">
       //hack: remove <p> tags from images in tables 
       document.querySelectorAll("td").forEach(t => {

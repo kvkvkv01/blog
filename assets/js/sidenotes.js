@@ -4,19 +4,19 @@
 
 	Sidenotes (see https://gwern.net/sidenote ) are superior to footnotes where
 	possible because they enable the reader to immediately look at them without
-	requiring user action to “go to” or “pop up” the footnotes; even floating
+	requiring user action to "go to" or "pop up" the footnotes; even floating
 	footnotes require effort by the reader.
 
 	sidenotes.js is inspired by the Tufte-CSS sidenotes
 	(https://edwardtufte.github.io/tufte-css/#sidenotes), but where Tufte-CSS
 	uses static footnotes inlined into the body of the page (requiring
-	modifications to Pandoc’s compilation), which doesn’t always work well for
+	modifications to Pandoc's compilation), which doesn't always work well for
 	particularly long or frequent sidenotes, sidenotes.js will rearrange
 	sidenotes to fit as best as possible, and will respond to window changes.
 
-	Particularly long sidenotes are also partially “collapsed”. Styling
+	Particularly long sidenotes are also partially "collapsed". Styling
 	(especially for oversized-sidenotes which must scroll) is done in
-	/static/css/default.css “SIDENOTES” section.
+	/static/css/default.css "SIDENOTES" section.
 
 	Author: Said Achmiz
 	2019-03-11
@@ -118,12 +118,12 @@ Sidenotes = { ...Sidenotes,
 		return counterpart;
 	},
 
-	/*  The “target counterpart” is the element associated with the target, i.e.:
+	/*  The "target counterpart" is the element associated with the target, i.e.:
 		if the URL hash targets a footnote reference, its counterpart is the
 		sidenote for that citation; and vice-versa, if the hash targets a sidenote,
 		its counterpart is the in-text citation. We want a target counterpart to be
 		highlighted along with the target itself; therefore we apply a special
-		‘targeted’ class to the target counterpart.
+		'targeted' class to the target counterpart.
 	 */
 	updateTargetCounterpart: () => {
 		GWLog("Sidenotes.updateTargetCounterpart", "sidenotes.js", 1);
@@ -255,7 +255,7 @@ Sidenotes = { ...Sidenotes,
 		}
 
 		/*	Hide mode selectors, as they would otherwise overlap a
-			sidenote that’s on the top-right.
+			sidenote that's on the top-right.
 		 */
 		if (Notes.noteNumberFromHash() > "")
 			Sidenotes.hideInterferingUIElements();
@@ -301,8 +301,8 @@ Sidenotes = { ...Sidenotes,
 	updateSidenotePositions: () => {
 		GWLog("Sidenotes.updateSidenotePositions", "sidenotes.js", 1);
 
-		/*  If we’re in footnotes mode (ie. the viewport is too narrow), then
-			don’t do anything.
+		/*  If we're in footnotes mode (ie. the viewport is too narrow), then
+			don't do anything.
 		 */
 		if (Sidenotes.mediaQueries.viewportWidthBreakpoint.matches == false)
 			return;
@@ -340,7 +340,7 @@ Sidenotes = { ...Sidenotes,
 													 element: potentiallyOverlappingElement });
 		});
 
-		//  The bottom edges of each column are also “proscribed vertical ranges”.
+		//  The bottom edges of each column are also "proscribed vertical ranges".
 		proscribedVerticalRangesLeft.push({
 			top:    Sidenotes.sidenoteColumnLeft.clientHeight,
 			bottom: Sidenotes.sidenoteColumnLeft.clientHeight
@@ -465,7 +465,7 @@ Sidenotes = { ...Sidenotes,
 			};
 
 			/*	We sort the fitting cells by vertical distance from the sidenote
-				and crowdedness at the sidenote’s default location within the
+				and crowdedness at the sidenote's default location within the
 				cell, and secondarily by horizontal distance from the sidenote.
 			 */
 			fittingLayoutCells.sort((cellA, cellB) => {
@@ -490,13 +490,13 @@ Sidenotes = { ...Sidenotes,
 			if (cell.sidenotes.length == 0)
 				return;
 
-			//	Set all of the cell’s sidenotes to default positions.
+			//	Set all of the cell's sidenotes to default positions.
 			cell.sidenotes.forEach(sidenote => {
 				let citation = Sidenotes.counterpart(sidenote);
 				sidenote.posInCell = defaultNotePosInCellForCitation(cell, citation);
 			});
 
-			//	Sort the cell’s sidenotes vertically (secondarily by number).
+			//	Sort the cell's sidenotes vertically (secondarily by number).
 			cell.sidenotes.sort((noteA, noteB) => {
 				return (   (noteA.posInCell - noteB.posInCell)
 						|| (parseInt(noteA.id.slice(2)) - parseInt(noteB.id.slice(2))));
@@ -550,7 +550,7 @@ Sidenotes = { ...Sidenotes,
 				thisNote.posInCell += ((overlapAbove - pushUpForce) + pushNotesUp([ (i - 1) ], pushUpForce));
 			}
 
-			/*	Check whether the lowest sidenote overlaps the cell’s bottom;
+			/*	Check whether the lowest sidenote overlaps the cell's bottom;
 				if so, push it (and any sidenotes above it that it bumps into)
 				upward.
 			 */
@@ -774,7 +774,7 @@ Sidenotes = { ...Sidenotes,
 				Sidenotes.putSidenoteBack(sidenote);
 			});
 
-			/*	Hide the “there is more hidden content below the fold”
+			/*	Hide the "there is more hidden content below the fold"
 				(ellipsis) indicator when client scrolls to the bottom of a 
 				cut-off sidenote; show it otherwise.
 			 */
@@ -893,9 +893,9 @@ Sidenotes = { ...Sidenotes,
 		addContentInjectHandler(GW.contentInjectHandlers.setMarginNoteStyle = (eventInfo) => {
 			GWLog("setMarginNoteStyle", "sidenotes.js", 1);
 
-			/*	Set margin notes to ‘inline’ or ‘sidenote’ style, depending on 
+			/*	Set margin notes to 'inline' or 'sidenote' style, depending on 
 				what mode the page is in (based on viewport width), whether each
-				margin note is in a constrained block, and whether it’s on the 
+				margin note is in a constrained block, and whether it's on the 
 				main page or in something like a pop-frame.
 			 */
 			eventInfo.container.querySelectorAll(".marginnote").forEach(marginNote => {
@@ -924,8 +924,8 @@ Sidenotes = { ...Sidenotes,
 		/*	When an anchor link is clicked that sets the hash to its existing
 			value, weird things happen. In particular, weird things happen with
 			citations and sidenotes. We must prevent that, by updating state
-			properly when that happens. (No ‘hashchange’ event is fired in this
-			case, so we cannot depend on the ‘GW.hashDidChange’ event handler.)
+			properly when that happens. (No 'hashchange' event is fired in this
+			case, so we cannot depend on the 'GW.hashDidChange' event handler.)
 		 */
 		addContentInjectHandler(Sidenotes.addFauxHashChangeEventsToNoteMetaLinks = (eventInfo) => {
 			GWLog("addFauxHashChangeEventsToNoteMetaLinks", "sidenotes.js", 1);
