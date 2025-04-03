@@ -25,10 +25,14 @@ var GW = {
         }
     },
 
+    // Content load handlers
+    contentLoadHandlers: [],
+
     // Notification center functionality
     notificationCenter: {
         notifications: [],
         listeners: {},
+        handlers: {},
         
         add: function(message, type) {
             this.notifications.push({ message, type });
@@ -64,6 +68,13 @@ var GW = {
                     }
                 });
             }
+        },
+
+        addHandlerForEvent: function(event, handler) {
+            if (!this.handlers[event]) {
+                this.handlers[event] = [];
+            }
+            this.handlers[event].push(handler);
         }
     },
 
@@ -129,6 +140,7 @@ var GW = {
 
     // Content load handling
     addContentLoadHandler: function(handler) {
+        this.contentLoadHandlers.push(handler);
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', handler);
         } else {
@@ -145,6 +157,68 @@ var GW = {
         } else {
             element.onscroll = handler;
         }
+    },
+
+    // UI element handling
+    addUIElement: function(element) {
+        if (element && element.parentNode) {
+            this.contentLoadHandlers.forEach(handler => {
+                try {
+                    handler(element);
+                } catch (e) {
+                    console.error('Error in content load handler:', e);
+                }
+            });
+        }
+    },
+
+    // Mode selector handling
+    injectModeSelector: function(element) {
+        if (!element) return;
+        
+        // Create mode selector container if it doesn't exist
+        let container = element.querySelector('.mode-selector-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.className = 'mode-selector-container';
+            element.appendChild(container);
+        }
+
+        // Create mode selector if it doesn't exist
+        let selector = container.querySelector('.mode-selector');
+        if (!selector) {
+            selector = document.createElement('select');
+            selector.className = 'mode-selector';
+            container.appendChild(selector);
+        }
+
+        // Add mode options if they don't exist
+        if (selector.options.length === 0) {
+            const modes = ['default', 'popup', 'inline'];
+            modes.forEach(mode => {
+                const option = document.createElement('option');
+                option.value = mode;
+                option.textContent = mode.charAt(0).toUpperCase() + mode.slice(1);
+                selector.appendChild(option);
+            });
+        }
+
+        // Add change event listener
+        selector.addEventListener('change', function() {
+            const mode = this.value;
+            // Trigger mode change event
+            const event = new CustomEvent('modechange', { detail: { mode } });
+            element.dispatchEvent(event);
+        });
+    },
+
+    // Media query handling
+    doWhenMatchMedia: function(query, callback) {
+        const mediaQuery = window.matchMedia(query);
+        if (mediaQuery.matches) {
+            callback(mediaQuery);
+        }
+        mediaQuery.addListener(callback);
     }
 };
 
@@ -169,4 +243,19 @@ window.addContentLoadHandler = function(handler) {
 // Make addScrollListener available globally
 window.addScrollListener = function(element, handler) {
     GW.addScrollListener(element, handler);
+};
+
+// Make addUIElement available globally
+window.addUIElement = function(element) {
+    GW.addUIElement(element);
+};
+
+// Make injectModeSelector available globally
+window.injectModeSelector = function(element) {
+    GW.injectModeSelector(element);
+};
+
+// Make doWhenMatchMedia available globally
+window.doWhenMatchMedia = function(query, callback) {
+    GW.doWhenMatchMedia(query, callback);
 }; 
