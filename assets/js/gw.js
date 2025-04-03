@@ -27,6 +27,18 @@ var GW = {
 
     // Content load handlers
     contentLoadHandlers: [],
+    contentInjectHandlers: [],
+
+    // SVG handling
+    svg: function(name, attrs) {
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', name);
+        if (attrs) {
+            Object.keys(attrs).forEach(key => {
+                svg.setAttribute(key, attrs[key]);
+            });
+        }
+        return svg;
+    },
 
     // Notification center functionality
     notificationCenter: {
@@ -117,6 +129,16 @@ var GW = {
         }
     },
 
+    addMousemoveListener: function(element, handler) {
+        if (element.addEventListener) {
+            element.addEventListener('mousemove', handler, { passive: true });
+        } else if (element.attachEvent) {
+            element.attachEvent('onmousemove', handler);
+        } else {
+            element.onmousemove = handler;
+        }
+    },
+
     // Class manipulation
     hasClass: function(element, className) {
         return element.classList ? element.classList.contains(className) : new RegExp('\\b' + className + '\\b').test(element.className);
@@ -146,6 +168,26 @@ var GW = {
         } else {
             handler();
         }
+    },
+
+    addContentInjectHandler: function(handler) {
+        this.contentInjectHandlers.push(handler);
+    },
+
+    // Content injection handling
+    injectContent: function(container) {
+        if (!container) {
+            console.warn('Attempted to inject content into undefined container');
+            return;
+        }
+        
+        this.contentInjectHandlers.forEach(handler => {
+            try {
+                handler(container);
+            } catch (e) {
+                console.error('Error in content inject handler:', e);
+            }
+        });
     },
 
     // Scroll handling
@@ -240,9 +282,19 @@ window.addContentLoadHandler = function(handler) {
     GW.addContentLoadHandler(handler);
 };
 
+// Make addContentInjectHandler available globally
+window.addContentInjectHandler = function(handler) {
+    GW.addContentInjectHandler(handler);
+};
+
 // Make addScrollListener available globally
 window.addScrollListener = function(element, handler) {
     GW.addScrollListener(element, handler);
+};
+
+// Make addMousemoveListener available globally
+window.addMousemoveListener = function(element, handler) {
+    GW.addMousemoveListener(element, handler);
 };
 
 // Make addUIElement available globally
@@ -253,6 +305,11 @@ window.addUIElement = function(element) {
 // Make injectModeSelector available globally
 window.injectModeSelector = function(element) {
     GW.injectModeSelector(element);
+};
+
+// Make injectContent available globally
+window.injectContent = function(container) {
+    GW.injectContent(container);
 };
 
 // Make doWhenMatchMedia available globally
