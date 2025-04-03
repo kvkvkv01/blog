@@ -21,13 +21,42 @@ var GW = {
     // Notification center functionality
     notificationCenter: {
         notifications: [],
+        listeners: {},
+        
         add: function(message, type) {
             this.notifications.push({ message, type });
+            this.fireEvent('notification', { message, type });
             // You can implement actual notification display logic here
             console.log(`[${type}] ${message}`);
         },
+        
         clear: function() {
             this.notifications = [];
+        },
+
+        addEventListener: function(event, callback) {
+            if (!this.listeners[event]) {
+                this.listeners[event] = [];
+            }
+            this.listeners[event].push(callback);
+        },
+
+        removeEventListener: function(event, callback) {
+            if (this.listeners[event]) {
+                this.listeners[event] = this.listeners[event].filter(cb => cb !== callback);
+            }
+        },
+
+        fireEvent: function(event, data) {
+            if (this.listeners[event]) {
+                this.listeners[event].forEach(callback => {
+                    try {
+                        callback(data);
+                    } catch (e) {
+                        console.error('Error in notification event listener:', e);
+                    }
+                });
+            }
         }
     },
 
@@ -89,8 +118,22 @@ var GW = {
         } else {
             element.className = element.className.replace(new RegExp('\\b' + className + '\\b', 'g'), '');
         }
+    },
+
+    // Content load handling
+    addContentLoadHandler: function(handler) {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', handler);
+        } else {
+            handler();
+        }
     }
 };
 
 // Make GW available globally
-window.GW = GW; 
+window.GW = GW;
+
+// Make getSavedCount available globally for backward compatibility
+window.getSavedCount = function() {
+    return GW.getSavedCount();
+}; 
