@@ -31,7 +31,11 @@
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         // Initialize sidenotes
-        Sidenotes.setup();
+        if (typeof Sidenotes !== 'undefined') {
+          Sidenotes.setup();
+        } else {
+          console.error('Sidenotes object not found. Make sure sidenotes.js is loaded correctly.');
+        }
       });
     </script>
 

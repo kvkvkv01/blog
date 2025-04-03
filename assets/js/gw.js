@@ -1,8 +1,48 @@
-/*  Create global ‘GW’ object, if need be.
+/*  Create global 'GW' object, if need be.
  */
 if (typeof window.GW == "undefined")
     window.GW = { };
 
+// Create Notes object if it doesn't exist
+if (typeof Notes === 'undefined') {
+    window.Notes = {
+        // Add necessary Notes properties and methods
+        setup: function() {
+            // Setup code for Notes
+        },
+        
+        // Function to check if hash matches a footnote
+        hashMatchesFootnote: function() {
+            const hash = window.location.hash;
+            return hash && hash.match(/^#fn\d+$/);
+        },
+        
+        // Function to check if hash matches a sidenote
+        hashMatchesSidenote: function() {
+            const hash = window.location.hash;
+            return hash && hash.match(/^#sn\d+$/);
+        },
+        
+        // Function to get note number from hash
+        noteNumberFromHash: function() {
+            const hash = window.location.hash;
+            if (!hash) return null;
+            
+            const match = hash.match(/^#(?:fn|sn)(\d+)$/);
+            return match ? parseInt(match[1], 10) : null;
+        },
+        
+        // Function to get sidenote ID for a number
+        sidenoteIdForNumber: function(number) {
+            return `sn${number}`;
+        },
+        
+        // Function to get footnote ID for a number
+        footnoteIdForNumber: function(number) {
+            return `fn${number}`;
+        }
+    };
+}
 
 /***********/
 /* HELPERS */
@@ -194,41 +234,28 @@ GW.isX11 = () => {
 		was when the active media query was added.
  */
 function doWhenMatchMedia(mediaQuery, options) {
-	options = Object.assign({
-		name: null,
-		ifMatchesOrAlwaysDo: null,
-		otherwiseDo: null,
-		whenCanceledDo: null,
-		callWhenAdd: true
-	}, options);
-
-    if (typeof GW.mediaQueryResponders == "undefined")
-        GW.mediaQueryResponders = { };
-
-    let mediaQueryResponder = (event, canceling = false) => {
-        if (canceling) {
-            GWLog(`Canceling media query “${options.name}”`, "media queries", 1);
-
-            if (options.whenCanceledDo != null)
-                options.whenCanceledDo(mediaQuery);
-        } else {
-            let matches = (typeof event == "undefined") ? mediaQuery.matches : event.matches;
-
-            GWLog(`Media query “${options.name}” triggered (matches: ${matches ? "YES" : "NO"})`, "media queries", 1);
-
-            if ((options.otherwiseDo == null) || matches)
-                options.ifMatchesOrAlwaysDo(mediaQuery);
-            else
-                options.otherwiseDo(mediaQuery);
+    // Simple implementation of doWhenMatchMedia
+    if (!options) return;
+    
+    // Create a function to handle media query changes
+    const mediaQueryResponder = (event) => {
+        const matches = event ? event.matches : mediaQuery.matches;
+        
+        if (options.ifMatchesOrAlwaysDo) {
+            options.ifMatchesOrAlwaysDo(mediaQuery);
         }
     };
-
-	if (options.callWhenAdd == true)
-	    mediaQueryResponder();
-
+    
+    // Add the event listener
     mediaQuery.addListener(mediaQueryResponder);
-
-    GW.mediaQueryResponders[options.name] = mediaQueryResponder;
+    
+    // Call the handler immediately
+    mediaQueryResponder();
+    
+    // Return a function to remove the listener
+    return function() {
+        mediaQuery.removeListener(mediaQueryResponder);
+    };
 }
 
 /*  Deactivates and discards an active media query, after calling the function
@@ -257,7 +284,7 @@ function cancelDoWhenMatchMedia(name) {
     called. Because event handlers are registered for events by event name
     (which may be any string we like), a handler may be registered for an event
     at any time and at any location in the code. (In other words, an event does
-    not need to first be “defined”, nor needs to “exist” in any way, in order
+    not need to first be "defined", nor needs to "exist" in any way, in order
     for a handler to be registered for it.)
 
     We can also make the calling of any given event handler conditional (with a
@@ -265,7 +292,7 @@ function cancelDoWhenMatchMedia(name) {
     determines whether its associated handler should be called or not, when the
     event the handler was registered for is fired), specify that an event
     handler should be called only once or many times, and group handlers for a
-    particular event into named “phases” (to ensure that certain handlers for an
+    particular event into named "phases" (to ensure that certain handlers for an
     event are always called before/after others).
 
     Events themselves are also user-defined. Causing an event to fire is as
@@ -281,28 +308,28 @@ function cancelDoWhenMatchMedia(name) {
 GW.notificationCenter = {
     /*  Dictionary of registered event handlers for named events.
 
-        KEYS are event names (e.g. ‘GW.contentDidLoad’).
+        KEYS are event names (e.g. 'GW.contentDidLoad').
 
         VALUES are arrays of handler definitions for each event. Each handler
         definition is a dictionary with the following keys/values:
 
-        - ‘f’ (key)
+        - 'f' (key)
             Handler function to call when the named event fires (passing the
             event info dictionary of the fired event). (See comment on the
-            ‘addHandlerForEvent’ function, below, for details.)
+            'addHandlerForEvent' function, below, for details.)
 
-        - ‘options’ (key) [optional]
+        - 'options' (key) [optional]
             Event options dictionary, with the following keys/values:
 
-            - ‘condition’ (key) [optional]
+            - 'condition' (key) [optional]
                 Test function, to which the event info dictionary of the fired
                 event is passed; the handler function is called if (and only if)
                 the condition returns true.
 
-            - ‘once’ (key) [optional]
+            - 'once' (key) [optional]
                 Boolean value; if true, the handler will be removed after the
                 handler function is called once (note that if there is a
-                condition function provided [see the ‘condition’ key], the
+                condition function provided [see the 'condition' key], the
                 handler function will not be called - and therefore will not be
                 removed - if the named event is fired but the condition
                 evaluates to false).
@@ -312,56 +339,56 @@ GW.notificationCenter = {
                 be invoked each time the named event fires and the condition,
                 if any, evaluates as true).
 
-            - ‘phase’ (key) [optional]
+            - 'phase' (key) [optional]
                 String which specifies when the given handler function should be
                 called, relative to other handlers registered for the named
                 event.
 
                 The format for this string is as follows:
 
-				- If the entire string is equal to “<”, then the given handler
+				- If the entire string is equal to "<", then the given handler
 				  function will be called prior to any handlers that are
 				  assigned to any other phase (or to no specific phase). (Within
-				  this “before all others” ‘pseudo-phase’, handlers are called
+				  this "before all others" 'pseudo-phase', handlers are called
 				  in the order in which they were added.)
 
-				- If the entire string is equal to “>”, then the given handler
+				- If the entire string is equal to ">", then the given handler
 				  function will be called after any handlers that are assigned
 				  to any other phase (or to no specific phase). (Within this
-				  “after all others” ‘pseudo-phase’, handlers are called in the
+				  "after all others" 'pseudo-phase', handlers are called in the
 				  order in which they were added.)
 
 				- If the string is empty, then the given handler function will
 				  be called after all other handlers, but before any handlers
-				  that were assigned to phase “>”. (Within this “no particular
-				  phase” ‘pseudo-phase’, handlers are called in the order in
+				  that were assigned to phase ">". (Within this "no particular
+				  phase" 'pseudo-phase', handlers are called in the order in
 				  which they were added.)
 
-                - If the first character is anything other than ‘<’ or ‘>’, the
+                - If the first character is anything other than '<' or '>', the
                   entire string is treated as the name of a handler phase. The
                   given handler function will be called in the same handler
                   phase as all other handlers assigned to that phase. (Within a
                   phase, handlers are called in the order in which they were
                   added.)
 
-                - If the first character is ‘<’, then the rest of the string
+                - If the first character is '<', then the rest of the string
                   is treated as the name of a handler phase. The given handler
                   function will be called prior to any handlers assigned to the
                   specified phase, but after any handlers assigned to an earlier
-                  named phase (if any). (Within such a “before phase X”
-                  ‘pseudo-phase’, handlers are called in the order in which they
+                  named phase (if any). (Within such a "before phase X"
+                  'pseudo-phase', handlers are called in the order in which they
                   were added.)
 
-                - If the first character is ‘>’, then the rest of the string
+                - If the first character is '>', then the rest of the string
                   is treated as the name of a handler phase. The given handler
                   function will be called after any handlers assigned to the
                   specified phase, but before any handlers assigned to a later
-                  named phase (if any). (Within such an “after phase X”
-                  ‘pseudo-phase’, handlers are called in the order in which they
+                  named phase (if any). (Within such an "after phase X"
+                  'pseudo-phase', handlers are called in the order in which they
                   were added.)
 
         When an event is fired, any handlers registered for that event (ie.
-        members of the array which is the value for that event’s name in the
+        members of the array which is the value for that event's name in the
         eventHandlers dictionary) are called in array order. (If a condition is
         specified for any given handler, the handler function is only called if
         the condition function - called with the event info dictionary as its
@@ -369,14 +396,14 @@ GW.notificationCenter = {
 
         The order of an event handlers array for a given event is, by default,
         determined by the order in which handlers are registered for that event.
-        The value of the ‘phase’ key of an event’s options dictionary can
-        override and modify this default order. (See definition of the ‘phase’
+        The value of the 'phase' key of an event's options dictionary can
+        override and modify this default order. (See definition of the 'phase'
         key of an event handler options dictionary, above.)
      */
     eventHandlers: { },
 
     /*  Defined event handler phases for certain named events.
-        (See definition of the ‘phase’ key of an event handler options
+        (See definition of the 'phase' key of an event handler options
          dictionary, above, for more info.)
 
         Phases are defined in execution order. For example, consider a
@@ -385,28 +412,28 @@ GW.notificationCenter = {
         fires, event handlers are called in the following order:
 
 		1. Handlers assigned to be called before all other phases (ie. those
-		   with ‘<’ as the value of their ‘phase’ key in their event handler
+		   with '<' as the value of their 'phase' key in their event handler
 		   options dictionary)
-        2. Handlers assigned to be called before the ‘foo’ phase (ie.
-           those with ‘<foo’ as the value of their ‘phase’ key in their
+        2. Handlers assigned to be called before the 'foo' phase (ie.
+           those with '<foo' as the value of their 'phase' key in their
            event handler options dictionary)
-        3. Handlers assigned to be called during the ‘foo’ phase (ie.
-           those with ‘foo’ as the value of their ‘phase’ key in their
+        3. Handlers assigned to be called during the 'foo' phase (ie.
+           those with 'foo' as the value of their 'phase' key in their
            event handler options dictionary)
-        4. Handlers assigned to be called after the ‘foo’ phase (ie.
-           those with ‘>foo’ as the value of their ‘phase’ key in their
+        4. Handlers assigned to be called after the 'foo' phase (ie.
+           those with '>foo' as the value of their 'phase' key in their
            event handler options dictionary)
-        5. Handlers assigned to be called before the ‘bar’ phase
-           (ie. those with ‘<bar’ as the value of their ‘phase’ key
+        5. Handlers assigned to be called before the 'bar' phase
+           (ie. those with '<bar' as the value of their 'phase' key
            in their event handler options dictionary)
-        6. Handlers assigned to be called during the ‘bar’ phase
-           (ie. those with ‘bar’ as the value of their ‘phase’ key
+        6. Handlers assigned to be called during the 'bar' phase
+           (ie. those with 'bar' as the value of their 'phase' key
            in their event handler options dictionary)
-        7. Handlers assigned to be called after the ‘bar’ phase
-           (ie. those with ‘>bar’ as the value of their ‘phase’ key
+        7. Handlers assigned to be called after the 'bar' phase
+           (ie. those with '>bar' as the value of their 'phase' key
            in their event handler options dictionary)
         8. Handlers assigned to be called after all other phases (ie. those
-		   with ‘>’ as the value of their ‘phase’ key in their event handler
+		   with '>' as the value of their 'phase' key in their event handler
 		   options dictionary)
 
         (Handlers with no specified phase might be called at any point after
@@ -417,24 +444,24 @@ GW.notificationCenter = {
 
     /*  Register a new event handler for the named event. Arguments are:
 
-        - ‘eventName’
-            The name of an event (e.g. ‘GW.contentDidLoad’).
+        - 'eventName'
+            The name of an event (e.g. 'GW.contentDidLoad').
 
-        - ‘f’
+        - 'f'
             Event handler function. When the event fires, this function will be
             called. Note that if a condition is specified in the event handler
             options (i.e. if a condition function is provided as the value of
-            the ‘condition’ key in the event handler options dictionary), then
+            the 'condition' key in the event handler options dictionary), then
             the handler function will be called only if the condition function
             evaluates true).
 
             The event handler function should take one argument: an event info
             dictionary. The keys and values of this dictionary are mostly
-            event-specific (but see the ‘fireEvent’ function, below, for more
+            event-specific (but see the 'fireEvent' function, below, for more
             info).
 
-        - ‘options’ [optional]
-            Event handler options dictionary. See comment on the ‘eventHandlers’
+        - 'options' [optional]
+            Event handler options dictionary. See comment on the 'eventHandlers'
             property (above) for info on possible keys/values.
 
         Note that if there already exists a registered event handler for the
@@ -462,7 +489,7 @@ GW.notificationCenter = {
             return;
         }
 
-        /*  If there’s not already a handlers array for the given event (which
+        /*  If there's not already a handlers array for the given event (which
             may be, e.g. because no event handlers have yet been registered
             for this event), create the array.
          */
@@ -475,21 +502,21 @@ GW.notificationCenter = {
         let handlers = GW.notificationCenter.eventHandlers[eventName];
 
         /*  If there is already a registered handler with the same handler
-            function as the one we’re trying to register, do not register this
+            function as the one we're trying to register, do not register this
             new one (even if it has different handler options).
          */
         if (handlers.findIndex(handler => handler.f == f) !== -1)
             return;
 
         /*  Get the handler phase order for the named event, if any. (Add to it
-        	the built-in phases “<” and “>”.)
+        	the built-in phases "<" and ">")
          */
         let phaseOrder = [ "<", ...(GW.notificationCenter.handlerPhaseOrders[eventName] ?? [ ]), ">" ];
 
 		/*  Get the target phase name, which may be the full value of the
-			‘phase’ key of the options dictionary, OR it may be that value
-			minus the first character (if the value of the ‘phase’ key
-			begins with a ‘<’ or a ‘>’ character).
+			'phase' key of the options dictionary, OR it may be that value
+			minus the first character (if the value of the 'phase' key
+			begins with a '<' or a '>' character).
 			*/
 		let targetPhase = options.phase.match(/^([<>]?)(.+)?/)[2];
 
@@ -498,30 +525,30 @@ GW.notificationCenter = {
 		 */
 		let targetPhaseIndex = phaseOrder.indexOf(targetPhase);
 
-		/*  Takes an index into the given event’s handler array. Returns a
+		/*  Takes an index into the given event's handler array. Returns a
 			dictionary with these keys/values:
 
-			- ‘phase’ [key]
+			- 'phase' [key]
 				The name of the phase to which the handler at the given
 				index is assigned (could be an empty string).
 
-			- ‘before’ [key]
+			- 'before' [key]
 				Boolean value; true if the handler at the given index is
 				assigned to run before the specified phase, false otherwise
-				(ie. if it’s instead assigned to run either during or
+				(ie. if it's instead assigned to run either during or
 				after the specified phase).
 
-			- ‘after’ [key]
+			- 'after' [key]
 				Boolean value; true if the handler at the given index is
 				assigned to run after the specified phase, false otherwise
-				(ie. if it’s instead assigned to run either before or
+				(ie. if it's instead assigned to run either before or
 				during the specified phase).
 
 			(Note that for an event handler which has not been assigned to
-			 any specific phase, ‘phase’ will be the empty string, and both
-			 ‘before’ and ‘after’ will be false.)
+			 any specific phase, 'phase' will be the empty string, and both
+			 'before' and 'after' will be false.)
 
-			Returns null if the given index is out of bounds of the event’s
+			Returns null if the given index is out of bounds of the event's
 			handler definitions array.
 		 */
 		let phaseAt = (index) => {
@@ -538,8 +565,8 @@ GW.notificationCenter = {
 		//	Where in the handlers array to insert the new handler?
         let insertAt;
         if (options.phase == "<") {
-			/*	If the handler we’re registering is assigned to phase “<” (i.e.,
-				is specified to run before all others), it’s inserted
+			/*	If the handler we're registering is assigned to phase "<" (i.e.,
+				is specified to run before all others), it's inserted
 				immediately after all other handlers already likewise specified.
 			 */
         	for (var i = 0; i < handlers.length; i++) {
@@ -549,18 +576,18 @@ GW.notificationCenter = {
 
 			insertAt = i;
         } else if (options.phase == ">") {
-			/*	If the handler we’re registering is assigned to phase “>” (i.e.,
-				is specified to run after all others), it’s inserted immediately
+			/*	If the handler we're registering is assigned to phase ">" (i.e.,
+				is specified to run after all others), it's inserted immediately
 				after all other handlers already so specified (i.e., at the very
 				end of the handlers array).
 			 */
         	insertAt = handlers.length;
         } else if (   options.phase == ""
         		   || targetPhaseIndex == -1) {
-			/*  If the handler we’re registering isn’t assigned to any
-				particular handler phase, or if it’s assigned to a phase that
-				does not actually exist in this event’s handler phase order,
-				we will add it just before all handlers of phase “>” (i.e.,
+			/*  If the handler we're registering isn't assigned to any
+				particular handler phase, or if it's assigned to a phase that
+				does not actually exist in this event's handler phase order,
+				we will add it just before all handlers of phase ">" (i.e.,
 				those handlers specified to be called after all others).
 			 */
         	for (var j = 0; j < handlers.length; j++) {
@@ -571,8 +598,8 @@ GW.notificationCenter = {
 			insertAt = j;
         } else {
 			/*	The handler is specified to run before, during, or after a named
-				phase (i.e., not “<” or “>”) that (as we’ve confirmed already)
-				exists in this event’s defined handler phase order.
+				phase (i.e., not "<" or ">") that (as we've confirmed already)
+				exists in this event's defined handler phase order.
 			 */
 
             if (options.phase.startsWith("<")) {
@@ -646,7 +673,7 @@ GW.notificationCenter = {
             }
         }
 
-        /*  Add the new event handler to the named event’s handler definitions
+        /*  Add the new event handler to the named event's handler definitions
             array, at whatever index we have now determined it should go to.
          */
         GW.notificationCenter.eventHandlers[eventName].splice(insertAt, 0, { f: f, options: options });
@@ -675,7 +702,7 @@ GW.notificationCenter = {
     prefireProcessors: { },
 
     /*  Array of events that are currently being fired. Used to avoid adding a
-        handler to an event while it’s firing.
+        handler to an event while it's firing.
      */
     currentEvents: [ ],
 
@@ -709,18 +736,18 @@ GW.notificationCenter = {
         condition function called, and the handler function will only be called
         if the condition evaluates true.)
 
-        The event info dictionary provided to the ‘fireEvent’ function will be
+        The event info dictionary provided to the 'fireEvent' function will be
         passed as the argument to each handler function (as well as to any
         condition function that is called to determine whether a handler should
         be called).
 
         The event info dictionary may contain various, mostly event-specific,
-        keys and values. The one common key/value that any event’s info
-        dictionary may contain is the ‘source’ key, whose value should be a
+        keys and values. The one common key/value that any event's info
+        dictionary may contain is the 'source' key, whose value should be a
         string identifying the function, browser event, or other context which
-        caused the given event to be fired (such as ‘DOMContentLoaded’ or
-        ‘Annotations.load’). In addition to any ways in which it may be used
-        by an event handler, this string (i.e. the value of the ‘source’ key)
+        caused the given event to be fired (such as 'DOMContentLoaded' or
+        'Annotations.load'). In addition to any ways in which it may be used
+        by an event handler, this string (i.e. the value of the 'source' key)
         is (if present) included in the console message that is printed when the
         event is fired.
      */
@@ -738,11 +765,11 @@ GW.notificationCenter = {
          */
         eventInfo.eventName = eventName;
 
-        /*  The ‘16’ here is the width of the date field plus spacing.
-            The “Source:” text is manually padded to be as wide
-            as “[notification]”.
+        /*  The '16' here is the width of the date field plus spacing.
+            The "Source:" text is manually padded to be as wide
+            as "[notification]".
          */
-        GWLog(`Event “${eventName}” fired.`
+        GWLog(`Event "${eventName}" fired.`
             + `${((eventInfo && eventInfo.source)
                   ? ("\n"
                    + "".padStart(16, ' ')
@@ -773,10 +800,10 @@ GW.notificationCenter = {
                  */
                 handler.f(eventInfo);
 
-                /*  If the handler options specified a true value for the ‘once’
+                /*  If the handler options specified a true value for the 'once'
                     key, we unregister this handler after having called it once.
 
-                    (Note that in the case of an once-only handler that’s called
+                    (Note that in the case of an once-only handler that's called
                      conditionally, i.e. one with a specified condition function,
                      regardless of how many times the named event fires, the handler
                      is never automatically removed until its condition evaluates
@@ -806,20 +833,20 @@ GW.notificationCenter = {
 /*  NOTE on the GW.contentDidLoad and GW.contentDidInject events:
 
     These events are fired whenever any new local page content is loaded and
-    injected into the page, respectively. (Here “loaded” may mean “loaded via a
-    network request”, “constructed from a template”, or any other process by
+    injected into the page, respectively. (Here "loaded" may mean "loaded via a
+    network request", "constructed from a template", or any other process by
     which a new unit of page content is created. This includes the initial page
     load, but also such things as annotations being lazy-loaded, etc. Likewise,
-    “injected” may mean “injected into the base page”, “injected into a
-    pop-frame shadow-root”, “injected into a DocumentFragment in cache”, etc.)
+    "injected" may mean "injected into the base page", "injected into a
+    pop-frame shadow-root", "injected into a DocumentFragment in cache", etc.)
 
     Many event handlers are attached to these, because a great deal of
     processing must take place before newly-loaded page content is ready for
     presentation to the user. Typography rectification must take place; the HTML
     structure of certain page elements (such as tables, figures, etc.) must be
     reconfigured; CSS classes must be added; various event listeners attached;
-    etc. Most of rewrite.js consists of exactly such “content load handlers” and
-    “content inject handlers”, a.k.a. “rewrite functions”. (Additional content
+    etc. Most of rewrite.js consists of exactly such "content load handlers" and
+    "content inject handlers", a.k.a. "rewrite functions". (Additional content
     load and inject handlers are defined elsewhere in the code, as appropriate;
     e.g. the handler that attaches event listeners to annotated links to load
     annotations when the user mouses over such links, which is found in
@@ -838,34 +865,34 @@ GW.notificationCenter = {
     following keys and values in their event info dictionary (see above
     for details on event info dictionaries):
 
-        ‘source’ (key) (required)
+        'source' (key) (required)
             String that indicates function (or event name, if fired from a
             browser event listener) from which the event is fired (such as
-            ‘Annotation.load’).
+            'Annotation.load').
 
-        ‘container’ (key) (required)
+        'container' (key) (required)
             DOM object containing the loaded content. (For the GW.contentDidLoad
             event fired on the initial page load, the value of this key is
             `document`, i.e. the root document of the page. For pop-frames, this
             may be the `document` property of the pop-frame, or a
             DocumentFragment containing the embedded page elements.) The
             container will contain nothing but the newly-loaded content.
-            (This key can be thought of as “what has been loaded?”.)
+            (This key can be thought of as "what has been loaded?".)
 
-        ‘document’ (key) (required)
+        'document' (key) (required)
             Document into which the content was loaded. May or may not be
-            identical with the value of the ‘container’ key (in those cases when
+            identical with the value of the 'container' key (in those cases when
             the loaded content is a whole document itself). The value of this
             key is necessarily either a Document (i.e., the root document of the
-            page) or a DocumentFragment. (This key can be thought of as “into
-            where has the loaded content been loaded?”.)
+            page) or a DocumentFragment. (This key can be thought of as "into
+            where has the loaded content been loaded?".)
 
-        ‘contentType’ (key)
+        'contentType' (key)
             String that indicates content type of the loaded content. Might be
             null (which indicates the default content type: local page content).
             Otherwise may be `annotation` or something else.
 
-        ‘loadLocation’ (key)
+        'loadLocation' (key)
             URL object (https://developer.mozilla.org/en-US/docs/Web/API/URL)
             which specifies the URL from which the loaded content was loaded.
             For the main page, the represented URL will be the value of
@@ -877,11 +904,11 @@ GW.notificationCenter = {
     The GW.contentDidInject event should additionally have a value for the
     following key:
 
-        ‘flags’ (key) (required)
+        'flags' (key) (required)
             Bit field containing various flags (combined via bitwise OR). The
             values of the flags are defined in GW.contentDidInjectEventFlags.
 
-            (Note that event handlers for the ‘GW.contentDidInject’ event can
+            (Note that event handlers for the 'GW.contentDidInject' event can
              access the values of these flags directly via property access on
              the event info, e.g. the following two expressions are equivalent:
 
@@ -893,26 +920,26 @@ GW.notificationCenter = {
 
             The flags are:
 
-            ‘clickable’
+            'clickable'
                 Currently unused. Reserved for future use.
 
-            ‘stripCollapses’
+            'stripCollapses'
                 Specifies whether the loaded content is permitted to have
                 collapsed sections. Generally false. If the value of this key
                 is true, then any collapse blocks in the loaded content will be
                 automatically expanded and stripped, and all content in
                 collapsible sections will be visible at all times.
 
-            ‘fullWidthPossible’
+            'fullWidthPossible'
                 Specifies whether full-width elements are permitted in the
                 loaded content. Generally true only for the main page load. If
                 false, elements marked as full-width will be laid out as if for
                 a mobile (narrow) viewport, regardless of the actual dimensions
-                of the loaded content’s container (i.e. they will not actually
-                be “full-width”).
+                of the loaded content's container (i.e. they will not actually
+                be "full-width").
 
-			‘localize’
-				Specifies whether content should be “localized” to the context
+			'localize'
+				Specifies whether content should be "localized" to the context
 				into which it is being injected. (Affects things like link
 				qualification. See transclude.js for more information.)
 				Generally true for page content, false for auxiliary content.
@@ -944,13 +971,13 @@ function addContentInjectHandler(handler, phase = "", condition = null, once = f
     });
 }
 
-/*  Event-specific handler phase order for the ‘GW.contentDidLoad’ and
-	‘GW.contentDidInject’ events.
+/*  Event-specific handler phase order for the 'GW.contentDidLoad' and
+	'GW.contentDidInject' events.
  */
 GW.notificationCenter.handlerPhaseOrders["GW.contentDidLoad"] = [ "transclude", "rewrite" ];
 GW.notificationCenter.handlerPhaseOrders["GW.contentDidInject"] = [ "rewrite", "eventListeners" ];
 
-/*  Event-specific boolean flags for the ‘GW.contentDidInject’ event.
+/*  Event-specific boolean flags for the 'GW.contentDidInject' event.
  */
 GW.contentDidInjectEventFlags = {
     clickable:          1 << 0,
@@ -960,7 +987,7 @@ GW.contentDidInjectEventFlags = {
     mergeFootnotes:     1 << 4
 };
 
-/*  Event-specific pre-fire processing for the ‘GW.contentDidInject’ event.
+/*  Event-specific pre-fire processing for the 'GW.contentDidInject' event.
  */
 GW.notificationCenter.prefireProcessors["GW.contentDidInject"] = (eventInfo) => {
     for (let [flagName, flagValue] of Object.entries(GW.contentDidInjectEventFlags))
@@ -981,8 +1008,8 @@ GW.eventListeners = { };
 
 	The purpose of this function is to dramatically improve the performance of
 	handler code attached to continuous UI events, such as scrolling (i.e., the 
-	“scroll” event, attached to any scroll container) or window resizing (i.e., 
-	the “resize” event, attached to the `window` object).
+	"scroll" event, attached to any scroll container) or window resizing (i.e., 
+	the "resize" event, attached to the `window` object).
 
 	Because such events are fired at a rate independent of the actual current
 	animation frame rate, using the usual event listener system to attach 
@@ -1006,9 +1033,9 @@ GW.eventListeners = { };
 		the listener may later be removed (see the removeNamedEventListener()
 		function).
 
-		Provided names must be unique per event. (A listener “foo” for event 
-		“bar” attached to object `baz` will overwrite a listener “foo” for 
-		event “bar” attached to object `quux`.)
+		Provided names must be unique per event. (A listener "foo" for event 
+		"bar" attached to object `baz` will overwrite a listener "foo" for 
+		event "bar" attached to object `quux`.)
 
 	defer (boolean)
 		If set to true, and the page has not yet finished loading, then the 
@@ -1033,7 +1060,7 @@ GW.eventListeners = { };
 
 		NOTE: The invocation of the handler function (fn()) immediately prior 
 		to the event listener being added will *not* have any event object 
-		passed to it (because it’s not being triggered by a fired event, nor
+		passed to it (because it's not being triggered by a fired event, nor
 		called within a listener function that was triggered by a fired event).
 		The handler function must be able to handle the case of an undefined
 		`event` argument, if this option is used!
@@ -1102,39 +1129,39 @@ function removeNamedEventListener(eventName, name) {
     }
 }
 
-/*  Adds a “scroll” event listener to the document (or other target).
+/*  Adds a "scroll" event listener to the document (or other target).
  */
 function addScrollListener(fn, options) {
 	return addNamedEventListener((options.target ?? document), "scroll", fn, options);
 }
 
-/*  Removes a named “scroll” event listener from the document (or other 
+/*  Removes a named "scroll" event listener from the document (or other 
 	target).
  */
 function removeScrollListener(name) {
 	removeNamedEventListener("scroll", name);
 }
 
-/*  Adds a “mousemove” event listener to the window (or other target).
+/*  Adds a "mousemove" event listener to the window (or other target).
  */
 function addMousemoveListener(fn, options) {
 	return addNamedEventListener((options.target ?? window), "mousemove", fn, options);
 }
 
-/*  Removes a named “mousemove” event listener from the window (or other 
+/*  Removes a named "mousemove" event listener from the window (or other 
 	target).
  */
 function removeMousemoveListener(name) {
 	removeNamedEventListener("mousemove", name);
 }
 
-/*  Adds a “resize” event listener to the window.
+/*  Adds a "resize" event listener to the window.
  */
 function addWindowResizeListener(fn, options) {
 	return addNamedEventListener(window, "resize", fn, options);
 }
 
-/*  Removes a named “resize” event listener from the window.
+/*  Removes a named "resize" event listener from the window.
  */
 function removeWindowResizeListener(name) {
 	removeNamedEventListener("resize", name);
@@ -1192,7 +1219,7 @@ function togglePageScrolling(enable) {
 
     /*  The `scroll-enabled-not` CSS class, which is added to the `html` element
         when scrolling is disabled by this function (in order to permit the
-        “toggle” behavior, i.e. calling ‘togglePageScrolling’ with no
+        "toggle" behavior, i.e. calling 'togglePageScrolling' with no
         arguments), allows the assignment of arbitrary CSS properties to the
         page on the basis of scroll state. This is purely a convenience (which
         may be useful if, for example, some styling needs to change on the basis
@@ -1326,3 +1353,95 @@ window.addEventListener("load", () => {
 document.addEventListener("readystatechange", () => {
     GWLog("document.readyState." + document.readyState, "browser event");
 });
+
+// URLFromString function
+function URLFromString(urlString) {
+    try {
+        return new URL(urlString);
+    } catch (e) {
+        console.error("Invalid URL:", urlString);
+        return null;
+    }
+}
+
+// Add URLFromString to GW object
+GW.URLFromString = URLFromString;
+
+// Fix notification center
+if (!GW.notificationCenter) {
+    GW.notificationCenter = {
+        currentEvents: {
+            remove: function() {
+                // Implementation for remove method
+                return this;
+            }
+        },
+        fireEvent: function(eventName, data) {
+            // Implementation for fireEvent
+            console.log("Event fired:", eventName, data);
+        },
+        handlerPhaseOrders: {},
+        prefireProcessors: {}
+    };
+}
+
+// GWLog function
+function GWLog(message, source) {
+    if (typeof source === 'undefined') {
+        source = 'GW';
+    }
+    console.log(`[${source}] ${message}`);
+}
+
+// Add GWLog to GW object
+GW.log = GWLog;
+
+// Add doWhenMatchMedia function to GW object
+function doWhenMatchMedia(mediaQuery, options) {
+    // Simple implementation of doWhenMatchMedia
+    if (!options) return;
+    
+    // Create a function to handle media query changes
+    const mediaQueryResponder = (event) => {
+        const matches = event ? event.matches : mediaQuery.matches;
+        
+        if (options.ifMatchesOrAlwaysDo) {
+            options.ifMatchesOrAlwaysDo(mediaQuery);
+        }
+    };
+    
+    // Add the event listener
+    mediaQuery.addListener(mediaQueryResponder);
+    
+    // Call the handler immediately
+    mediaQueryResponder();
+    
+    // Return a function to remove the listener
+    return function() {
+        mediaQuery.removeListener(mediaQueryResponder);
+    };
+}
+
+// Add doWhenMatchMedia to GW object
+GW.doWhenMatchMedia = doWhenMatchMedia;
+
+// Add relocate function to GW object
+function relocate(selector) {
+    const element = document.querySelector(selector);
+    if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+// Add relocate to GW object
+GW.relocate = relocate;
+
+// Add updateFootnoteTargeting function to GW object
+function updateFootnoteTargeting() {
+    // Simple implementation of updateFootnoteTargeting
+    // This function is called when switching from sidenotes to footnotes
+    console.log("Updating footnote targeting");
+}
+
+// Add updateFootnoteTargeting to GW object
+GW.updateFootnoteTargeting = updateFootnoteTargeting;
