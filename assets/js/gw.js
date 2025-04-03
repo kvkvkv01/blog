@@ -1370,18 +1370,53 @@ GW.URLFromString = URLFromString;
 // Fix notification center
 if (!GW.notificationCenter) {
     GW.notificationCenter = {
-        currentEvents: {
-            remove: function() {
-                // Implementation for remove method
-                return this;
+        currentEvents: [],
+        eventHandlers: {},
+        handlerPhaseOrders: {},
+        prefireProcessors: {},
+        fireEvent: function(eventName, eventInfo = {}) {
+            // Add event to current events
+            this.currentEvents.push(eventName);
+            
+            // Log the event
+            console.log(`Event "${eventName}" fired.`, eventInfo);
+            
+            // Call handlers if they exist
+            if (this.eventHandlers[eventName]) {
+                this.eventHandlers[eventName].forEach(handler => {
+                    if (handler.condition && !handler.condition(eventInfo)) {
+                        return;
+                    }
+                    handler.f(eventInfo);
+                    if (handler.once) {
+                        this.removeHandlerForEvent(eventName, handler.f);
+                    }
+                });
+            }
+            
+            // Remove event from current events
+            const index = this.currentEvents.indexOf(eventName);
+            if (index > -1) {
+                this.currentEvents.splice(index, 1);
             }
         },
-        fireEvent: function(eventName, data) {
-            // Implementation for fireEvent
-            console.log("Event fired:", eventName, data);
+        addHandlerForEvent: function(eventName, f, options = {}) {
+            if (!this.eventHandlers[eventName]) {
+                this.eventHandlers[eventName] = [];
+            }
+            this.eventHandlers[eventName].push({
+                f: f,
+                condition: options.condition,
+                once: options.once
+            });
         },
-        handlerPhaseOrders: {},
-        prefireProcessors: {}
+        removeHandlerForEvent: function(eventName, f) {
+            if (this.eventHandlers[eventName]) {
+                this.eventHandlers[eventName] = this.eventHandlers[eventName].filter(
+                    handler => handler.f !== f
+                );
+            }
+        }
     };
 }
 
@@ -1445,3 +1480,24 @@ function updateFootnoteTargeting() {
 
 // Add updateFootnoteTargeting to GW object
 GW.updateFootnoteTargeting = updateFootnoteTargeting;
+
+// Add doWhenPageLayoutComplete function
+function doWhenPageLayoutComplete(f) {
+    if (document.readyState === 'complete') {
+        f();
+    } else {
+        window.addEventListener('load', f);
+    }
+}
+
+// Add doWhenPageLayoutComplete to GW object
+GW.doWhenPageLayoutComplete = doWhenPageLayoutComplete;
+
+// Initialize content load event
+document.addEventListener('DOMContentLoaded', function() {
+    GW.notificationCenter.fireEvent('GW.contentDidLoad', {
+        source: 'DOMContentLoaded',
+        container: document.body,
+        document: document
+    });
+});
