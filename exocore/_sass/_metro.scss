@@ -570,6 +570,7 @@ th {
     margin-bottom: 0.5em;
     background-color: $background;
     width: 100%;
+    display: block ruby; // idk it worked lol
     a {
       font-weight: bold;
       text-decoration: none;
