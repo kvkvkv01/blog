@@ -1,5 +1,5 @@
 /* Sidenotes styling */
-.sidenote {
+.footnotes li.sidenote {
     position: absolute;
     width: 30%;
     margin-top: 0;
@@ -56,20 +56,20 @@
     z-index: 1;
 }
 
-.sidenote.highlighted,
-.footnote-ref.highlighted {
+.footnotes li.sidenote.highlighted,
+sup.footnote-ref.highlighted {
     background-color: var(--highlight-color, rgba(255, 255, 0, 0.3));
 }
 
-.sidenote.hovering {
+.footnotes li.sidenote.hovering {
     z-index: 10;
 }
 
-.sidenote.displaced {
+.footnotes li.sidenote.displaced {
     z-index: 5;
 }
 
-.sidenote.cut-off .sidenote-outer-wrapper::after {
+.footnotes li.sidenote.cut-off .sidenote-outer-wrapper::after {
     content: "...";
     position: absolute;
     bottom: 0;
@@ -81,17 +81,17 @@
     pointer-events: none;
 }
 
-.sidenote.hide-more-indicator .sidenote-outer-wrapper::after {
+.footnotes li.sidenote.hide-more-indicator .sidenote-outer-wrapper::after {
     display: none;
 }
 
-.footnote-back {
+.footnote-backref {
     display: inline-block;
     margin-left: 0.5rem;
     text-decoration: none;
 }
 
-.footnote-back svg {
+.footnote-backref svg {
     width: 1rem;
     height: 1rem;
     transition: transform 0.3s ease;
@@ -99,7 +99,7 @@
 
 /* Mobile adjustments */
 @media screen and (max-width: 760px) {
-    .sidenote {
+    .footnotes li.sidenote {
         position: relative;
         float: none;
         clear: both;
@@ -122,7 +122,7 @@
 
 /* Print styles */
 @media print {
-    .sidenote {
+    .footnotes li.sidenote {
         position: relative;
         float: none;
         clear: both;

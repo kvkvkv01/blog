@@ -16,9 +16,10 @@
         sidenoteWidth: '30%', // Width of sidenote columns
         minViewportWidth: 760, // Minimum viewport width for sidenotes
         selectors: {
-            sidenote: '.sidenote',
-            footnoteRef: '.footnote-ref',
-            footnoteBack: '.footnote-back',
+            footnotesContainer: '.footnotes', // Jekyll kramdown renders footnotes in a .footnotes container
+            sidenote: '.footnotes li', // Jekyll kramdown renders footnotes as li elements inside .footnotes
+            footnoteRef: 'sup.footnote-ref', // Jekyll kramdown renders footnote references as sup elements with class footnote-ref
+            footnoteBack: '.footnote-backref', // Jekyll kramdown renders footnote backlinks with class footnote-backref
             sidenoteColumn: '.sidenote-column',
             potentiallyOverlapping: 'h1, h2, h3, h4, h5, h6, p, blockquote, pre, table, .sidenote'
         }
@@ -64,15 +65,49 @@
         }
 
         collectSidenotes() {
+            // Find the footnotes container
+            const footnotesContainer = document.querySelector(config.selectors.footnotesContainer);
+            if (!footnotesContainer) {
+                console.warn('Sidenotes: No footnotes container found');
+                return;
+            }
+            
             // Collect all sidenotes and footnote references
             this.sidenotes = Array.from(document.querySelectorAll(config.selectors.sidenote));
             this.footnoteRefs = Array.from(document.querySelectorAll(config.selectors.footnoteRef));
+            
+            if (this.sidenotes.length === 0 || this.footnoteRefs.length === 0) {
+                console.warn('Sidenotes: No footnotes or footnote references found');
+                return;
+            }
+            
+            console.log(`Sidenotes: Found ${this.sidenotes.length} footnotes and ${this.footnoteRefs.length} footnote references`);
             
             // Add event listeners to footnote references
             this.footnoteRefs.forEach(ref => {
                 ref.addEventListener('click', (e) => this.handleFootnoteClick(e, ref));
                 ref.addEventListener('mouseenter', () => this.highlightSidenote(ref));
                 ref.addEventListener('mouseleave', () => this.unhighlightSidenote(ref));
+            });
+            
+            // Add sidenote classes to the footnotes
+            this.sidenotes.forEach(sidenote => {
+                sidenote.classList.add('sidenote');
+                
+                // Create wrapper elements for the sidenote
+                const outerWrapper = document.createElement('div');
+                outerWrapper.className = 'sidenote-outer-wrapper';
+                
+                const innerWrapper = document.createElement('div');
+                innerWrapper.className = 'sidenote-inner-wrapper';
+                
+                // Move the sidenote content into the wrappers
+                while (sidenote.firstChild) {
+                    innerWrapper.appendChild(sidenote.firstChild);
+                }
+                
+                outerWrapper.appendChild(innerWrapper);
+                sidenote.appendChild(outerWrapper);
             });
         }
 
