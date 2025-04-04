@@ -28,16 +28,7 @@
     
     <!-- Add sidenotes JavaScript -->
     <script src="{{ site.baseurl }}/assets/js/sidenotes.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // Initialize sidenotes
-        if (typeof Sidenotes !== 'undefined') {
-          Sidenotes.setup();
-        } else {
-          console.error('Sidenotes object not found. Make sure sidenotes.js is loaded correctly.');
-        }
-      });
-    </script>
+    <!-- Sidenotes will be automatically initialized when the DOM is ready -->
 
     <script type="text/javascript">
       //hack: remove <p> tags from images in tables 
