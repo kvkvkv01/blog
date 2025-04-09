@@ -32,7 +32,7 @@ Here is a basic wikilink, pointing to other posts on this Exocore: `[[what-is-ob
 
 It is written as the title of their corresponding markdown file, surrounded by double square brackets. However, in the final render they are presented by default as the page's title. This saves you typing out the whole page title in your markdown document, and allows the Foam VSCode extension to suggest files as you type. Below you can read about how to change their presentation.
 
-You can alias a link like this: ``[[2025-04-favorite-games-list|this link]]`` if you don't want to keep the title. Heads up—``[[2025-04-favorite-games-list|This link]]`` points to Anthony's notes on his favorite games.
+You can alias a link like this: ``[[2025-04-favorite-games-list|this link]]`` if you don't want to keep the title. Heads up—[2025-04-favorite-games-list|This link] points to Anthony's notes on his favorite games.
 
 You can also point to headers within a page: `[[2025-04-writing-with-exocore-syntax#Wikilink Embeds|This wikilink]]`. [[2025-04-writing-with-exocore-syntax#Wikilink Embeds|This wikilink]] points to a header further down on this page, by using a `#`. Under that header you will find a different sort of wikilink— an embed. The content of another note is embedded within the current note. You can also point to a particular header within another note.  
 
