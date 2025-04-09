@@ -2,8 +2,6 @@
 {% include head-custom.html %}
 <html lang="{{ page.lang | default: site.lang | default: "en-US" }}">
   <head>
-    <!-- Add sidenotes CSS -->
-    <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/sidenotes.css">
   </head>
   <body>
       {{ content }}
@@ -25,12 +23,6 @@
     
     <!-- Add sidenotes JavaScript -->
     <script src="{{ site.baseurl }}/assets/js/sidenotes.js"></script>
-    <!-- Initialize sidenotes -->
-    <script src="{{ site.baseurl }}/assets/js/init-sidenotes.js"></script>
-    <!-- Convert footnotes to sidenotes format -->
-    <script src="{{ site.baseurl }}/assets/js/footnote-converter.js"></script>
-    <!-- Add margin notes support -->
-    <script src="{{ site.baseurl }}/assets/js/margin-notes.js"></script>
 
     <script type="text/javascript">
       //hack: remove <p> tags from images in tables 
