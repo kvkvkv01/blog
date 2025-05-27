@@ -5,6 +5,9 @@
 The exocore is a preconfigured package to roll out your own no-code, no-cost personal website as a public exocortex from documents written in simple Markdown syntax, including interlinking, generated backlinks and a nodal graph-rendering. Site's are rendered in fast, responsive, standards-compliant static HTML.
 
 The exocore is developed by [Remilia Collective](https://remilia.org) as a [Jamstack](https://jamstack.org/) worfklow and extension of [Foam](https://github.com/foambubble/foam) to complete the system of an accessible and standardized autopublishing knowledgebase network, with increments by [Kanon de Rothschilde](https://x.com/wagyugroyper) that intend on making the experience similar to [Gwern's](https://gwern.net) own personal website. 
+
+This project is *UNDER DEVELOPMENT*.
+
 ## Deploy your own Exocore to the Web
 
 ### Create Github Account
@@ -15,7 +18,7 @@ Continue below when you have an account ready.
 
 ### Install the Exocore template to GitHub and Netlify
 
-Open our [One-click installation](https://app.netlify.com/start/deploy?repository=https://github.com/remiliacorp/exocore).
+Open our [One-click installation](https://app.netlify.com/start/deploy?repository=https://github.com/kvkvkv01/blog).
 
 Steps:
 
